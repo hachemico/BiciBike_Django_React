@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Istok+Web&display=swap');
+
+.page-footer{
+    font-family: 'Istok Web', sans-serif;
+    font-size:large;
+}
+.Footer{
+    display: flex;
+    flex-direction: row;
+    background-color: beige;
+    padding: 10px;
+    /* margin-left: 10px; */
+}
+.list-unstyled a{
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    color:whitesmoke;
+}
+.DescripcionFooter p{
+    text-decoration: none;
+    padding: 10px;
+    color: black;
+}
