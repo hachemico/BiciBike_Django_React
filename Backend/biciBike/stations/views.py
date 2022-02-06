@@ -27,7 +27,7 @@ class StationListAPIView(generics.ListAPIView):
     queryset = Station.objects.all()
     pagination_class = None
     permission_classes = (AllowAny,)
-    serializer_class = StationListSerializer
+    serializer_class = StationRetrieveSerializer
 
     def list(self, request):
         serializer_data = self.get_queryset()
