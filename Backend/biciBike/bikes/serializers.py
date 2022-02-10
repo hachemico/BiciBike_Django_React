@@ -6,7 +6,11 @@ from .models import Bike
 class BikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bike
-        fields = ['serialNumber']
+        fields = [
+            'serialNumber',
+            'station',
+            'available'
+        ]
 
 class BikeListSerializer(serializers.ModelSerializer):
     class Meta:

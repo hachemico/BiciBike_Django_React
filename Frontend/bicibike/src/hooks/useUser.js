@@ -3,13 +3,13 @@ import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
 import Context from "../context/UserContext";
 import { useNavigate } from 'react-router-dom';
-
+import UserService from '../services/UserService'
 export default function useUser(){
 
-
-const { jwt, setJWT} = useContext(Context)
-// const [state, setState] = useState()
-const [ setState] = useState()
+  // const { jwt, setJWT} = useContext(Context)
+const { jwt, setJWT,favs,setFavs} = useContext(Context)
+const [state, setState] = useState()
+// const [ setState] = useState()
 let navigate = useNavigate();
 
 const loginForm = useCallback(({email, password}) => {
@@ -19,12 +19,12 @@ const loginForm = useCallback(({email, password}) => {
       .then(jwt => {
           console.log("entra hook-useUser --> login")
           console.log(jwt.data.user.token)
-        window.sessionStorage.setItem('jwt', jwt.data.user.token)
+        window.sessionStorage.setItem('token', jwt.data.user.token)
         setState({loading: false, error: false })
         setJWT(jwt.data.user.token)
       })
       .catch(err => {
-        window.sessionStorage.removeItem('jwt')
+        window.sessionStorage.removeItem('token')
         setState({loading: false, error: true })
         console.error(err)
       })
@@ -61,27 +61,74 @@ const registerForm = useCallback(
 
   const logout = useCallback(() => {
     console.log("entra hook-useUser --> logout")
-    window.sessionStorage.removeItem('jwt')
+    window.sessionStorage.removeItem('token')
     setJWT(null)
   }, [setJWT])
 
-//   const check_auth = () => {
+  const check_auth = () => {
     
-//     if(localStorage.getItem('id_token')){
-//       return true
-//     }
-//     return false
-//   }
-  console.log("valor booleanJWT")
-  console.log(Boolean(jwt))
+    if(window.sessionStorage.getItem('token')){
+      return true
+    }
+    return false
+  }
+
+  const rentBike = useCallback(() => {
+    console.log("entra hook-useUser --> rentBike")
+    // window.sessionStorage.removeItem('jwt')
+    // setJWT(null)
+  // }, [setJWT])
+}, [])
+
+
+const addFav = useCallback(({slot}) => {
+  console.log("Entra addFAv - USERHOOK")
+
+  UserService.postAddFav(slot.id_bike)
+    .then(setFavs)
+   
+    .catch(err => {
+      console.error(err)
+    })
+}, [jwt, setFavs]) 
+// }, []) 
+
+const unFav = useCallback(({slot}) => {
+  console.log("Entra delFAv - USERHOOK")
+
+  console.log(slot.id_bike)
+
+  UserService.DeleteFav(slot.id_bike)
+    .then((data) => {
+
+    console.log(data)
+      // setFavs()
+     })
+   
+    .catch(err => {
+      console.error(err)
+    })
+// }, [jwt, setFavs]) 
+}, []) 
+
+
+
+  // console.log("valor booleanJWT")
+  // console.log(Boolean(jwt))
 
   return {
     isLogged: Boolean(jwt),
     // isLoginLoading: state.loading,
     // hasLoginError: state.error,
+    check_auth,
     registerForm,
     loginForm,
-    logout
+    logout,
+    rentBike,
+    addFav,
+    unFav,
+    favs
+    
   }
 
 }

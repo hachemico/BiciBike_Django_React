@@ -5,11 +5,11 @@ export default() => {
     baseURL: "http://0.0.0.0:8000/api"
   })
 
-  const token = localStorage.getItem('token')
+  const token = window.sessionStorage.getItem('token')
   if (token ) {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    console.log("Token enviado");
-    console.log(token);
+    axiosInstance.defaults.headers.common['Authorization'] = `Token ${token}`
+    // console.log("Token enviado");
+    // console.log(token);
 
   } 
 

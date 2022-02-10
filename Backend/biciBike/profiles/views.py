@@ -4,10 +4,12 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
+
 from .models import Profile
 from .renderers import ProfileJSONRenderer
 from .serializers import ProfileSerializer
-from rest_framework import viewsets
+
 
 
 #Admin
@@ -79,3 +81,7 @@ class ProfileFollowAPIView(APIView):
         })
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class ProfileFavoritesAPIView(APIView):
+
+    print("Entra profileFavoritesAPIView")

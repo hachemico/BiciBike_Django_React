@@ -2,13 +2,19 @@ import React from 'react'
 // import axios from 'axios';
 import { useStations } from '../../hooks/useStations';
 import StationsList from '../../components/ListStations/listStations';
+import Spinner from '../../components/Spinner/spinner';
 
 export default function Stations() {
 
-    const {stations} = useStations();
+    const {stations,loading} = useStations();
     console.log(stations)
 
 return (
-   <StationsList stations={stations}/>
-)
+    <>
+    {loading
+        ? <Spinner/>
+        : <StationsList stations={stations}/>
+    }
+    </>
+   )
 }

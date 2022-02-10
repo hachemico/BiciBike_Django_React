@@ -7,10 +7,10 @@ from rest_framework.generics import RetrieveAPIView
 from .serializers import BikeSerializer, BikeListSerializer, BikeDetailSerializer
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
-from rest_framework.permissions import (IsAdminUser, AllowAny,)
+from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from .models import Bike
 
-
+#Admin
 class BikeViewSetAdmin(viewsets.ModelViewSet):
     queryset = Bike.objects.all()
     serializer_class = BikeSerializer
@@ -57,4 +57,51 @@ class BikeRetrieveAPIView(RetrieveAPIView):
         })
         print('*********** serializer.data ************') 
         print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class BikeFavoriteAPIView(APIView):
+
+    permission_classes = (IsAuthenticated,)
+    # permission_classes = (AllowAny,)
+    serializer_class = BikeSerializer
+
+    def post(self, request, serialNumber=None):
+        
+        print('*********** BikeFavouriteAPIView ************') 
+
+        profile = self.request.user.profile
+        serializer_context = {'request': request}
+
+        try:
+            bike = Bike.objects.get(serialNumber=serialNumber)
+            print("*******bike*********")
+            print(bike)
+        except Bike.DoesNotExist:
+            return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        profile.favorite(bike)
+
+        serializer = self.serializer_class(bike, context = serializer_context)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        
+    def delete(self, request, serialNumber=None):
+        
+        print('*********** Bike-UNfavouriteAPIView ************') 
+        profile = self.request.user.profile
+        serializer_context = {'request': request}
+
+        try:
+            bike = Bike.objects.get(serialNumber=serialNumber)
+            print("*******bike*********")
+            print(bike)
+            # favs= 
+        except Bike.DoesNotExist:
+           return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        profile.unfavorite(bike)
+
+        serializer = self.serializer_class(bike, context=serializer_context)
+
         return Response(serializer.data, status=status.HTTP_200_OK)

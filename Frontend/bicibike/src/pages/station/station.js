@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSingleStations } from "../../hooks/useDetailStations";
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Slot from "../../components/Slot/slot";
+// import Card from 'react-bootstrap/Card'
 
+import Slot from "../../components/Slot/slot";
+import Spinner from "../../components/Spinner/spinner";
 
 
 export default function Station(){
@@ -19,29 +19,32 @@ export default function Station(){
 //    console.log(singleStation.name)
 //    console.log(singleStation.slots)
 
+const divStyle ={
+    color:'black'
+}
+
 return (
  
-    singleStation === undefined ? <h1>Csrgando</h1> :
-    
-    <div className="container">
-        <div className="row">
-            <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src="holder.js/100px180" />
-                <Card.Body>
-                    <Card.Title>{singleStation.name}</Card.Title>
-                    <Card.Title> Slots {singleStation.slot_number}</Card.Title>
-                    <div>
-                        {
-                            singleStation.slots.map((slot,index)=>(
-                              <Slot key={index} slot={slot}/>
-                            )) 
-                        }
-                    </div>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-        </div>
-    </div>
+    singleStation === undefined 
+        ? <Spinner/> 
+        : <div className="container">
+            <div className="row">
+                <div className="StationSingle">
+
+                
+                        <h1 style={divStyle}>{singleStation.name}</h1>
+                        <h3 style={divStyle}> Slots {singleStation.slot_number}</h3>
+                        <div className="row">
+                            {
+                                singleStation.slots.map((slot,index)=>(
+                                <Slot key={index} slot={slot} index={index}/>
+                                )) 
+                            }
+                        </div>
+                            
+                </div>    
+            </div>
+         </div>
 
 
 
