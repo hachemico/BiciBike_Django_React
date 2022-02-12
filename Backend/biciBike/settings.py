@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import pymysql
 pymysql.install_as_MySQLdb()
-
+import os
 
 from pathlib import Path
 
@@ -97,10 +97,10 @@ WSGI_APPLICATION = 'biciBike.wsgi.application'
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'biciBike',
-            'USER': 'root',
-            'PASSWORD': 'hache1234',
-            'HOST': 'localhost',
+            'NAME': os.environ['MYSQL_DATABASE'],
+            'USER': os.environ['MYSQL_USER'],
+            'PASSWORD': os.environ['MYSQL_PASSWORD'],
+            'HOST': 'mysql',
             'PORT': '3306',
         }
     }
