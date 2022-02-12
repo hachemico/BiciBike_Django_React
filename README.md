@@ -126,10 +126,18 @@ Nos situaremos en la raiz del proyecto, en el que tenemos el docker-compose.yml.
 Ejecutamos:
  - $ docker-compose up
 
-Cliente:http://0.0.0.0:3000/
+Cliente:
 
-Server: http://0.0.0.0:8000/admin/
-        http://0.0.0.0:8000/api/
+```
+http://0.0.0.0:3000/
+```
 
+Server: 
+
+```
+http://0.0.0.0:8000/admin/ 
+http://0.0.0.0:8000/api/
+
+```
 
 
