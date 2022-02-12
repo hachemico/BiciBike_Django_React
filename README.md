@@ -71,6 +71,8 @@ Para ello => Declaramos import os y definimos las variables.
 
 Estos valores están definidos en un archivo .env privado.
 
+> Tener en cuenta que el valor de HOST coincide con el nombre de la imagen del contenedor de MYSQL.
+
 ### FRONTEND / Client
 
 - BUILD: indicamos en la carpeta donde se encuentra el Dockerfile para que "construya" la imagen de Django.
@@ -113,7 +115,11 @@ Definimos a nivel globarl las redes que emplean los contenedores en la comunicac
 
 <br>
 
-### VARIABLES ENTORNO
+## PUESTA EN MARCHA.
+
+Lo primero que tenemos que hacer es decargarse el repositorio desde Github en la Rama de Develop.
+
+git clone 
 
 
 
