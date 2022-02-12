@@ -20,6 +20,7 @@ Empezamos con el docker-compose.yml
 - A continuación vienen los servicios.
 
 #### mysql
+
 - IMAGE: Definimos la imagen sobre la que vamos a crear el contendor. Podemos encontrarla en "DockerHub".
 - COMMAND: El comando que se ejecutara una vez creada la imagen antes de finalizar.
 - PORT: Puertos
@@ -29,6 +30,7 @@ Empezamos con el docker-compose.yml
 ![Captura de pantalla de 2022-02-12 21-10-15](https://user-images.githubusercontent.com/62303274/153726774-94b76a09-1c70-49c5-8087-90652190f7c1.png)
 
 <br>
+
 ### BACKEND / Server
 
 Seguimos con el docker-compose.yml
@@ -45,10 +47,19 @@ Seguimos con el docker-compose.yml
 
 ![Captura de pantalla de 2022-02-12 21-20-43](https://user-images.githubusercontent.com/62303274/153727069-5db0c46a-833b-4cf8-ac22-56c8d68d1508.png)
 
+#### IMAGE/DOCKERFILE/
 
-IMAGE/DOCKERFILE/
+- FROM: Definimos la imagen sobre la que vamos a crear el contendor. Podemos encontrarla en "DockerHub".
+- ENV : Variables.
+- ADD: añadimos archivos o directorios a la imagen.
+- WORKDIR: Equivalente a PWD, indica en que ruta nos encontramos en el proyecto.
+- RUN:
+  - chmod +x ./wait-for-it.sh => aplicamos permisos de ejecución al script.
+  - pip install --upgrade pip => actualiza pip.
+  - pip intall -r requirements.txt => instala las dependencias declaradas en requeriments.txt
+- EXPOSE: exponer el puertos.
 
-
+![Captura de pantalla de 2022-02-12 21-22-48](https://user-images.githubusercontent.com/62303274/153727138-d2be014a-cc8a-4730-a1ba-9d8782c5bd1c.png)
 
 
 - BUILD: indicamos en la carpeta donde se encuentra el Dockerfile para que "construya" la imagen de Django.
@@ -58,4 +69,12 @@ IMAGE/DOCKERFILE/
 - ENV_FILE:
 - NETWORKS:
 - DEPENDS_ON:
+
+
+- FROM:
+- ENV
+- ADD
+- WORKDIR
+- RUN
+- EXPOSE:
 
