@@ -122,6 +122,7 @@ Lo primero que tenemos que hacer es decargarse el repositorio desde Github en la
 - $ git clone https://github.com/hachemico/BiciBike_Django_React.git
 
 Nos situaremos en la raiz del proyecto, en el que tenemos el docker-compose.yml.
+Añadimos el archivo .env necessario.
 
 Ejecutamos:
  - $ docker-compose up
