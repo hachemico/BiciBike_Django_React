@@ -119,7 +119,17 @@ Definimos a nivel globarl las redes que emplean los contenedores en la comunicac
 
 Lo primero que tenemos que hacer es decargarse el repositorio desde Github en la Rama de Develop.
 
-git clone 
+- $ git clone https://github.com/hachemico/BiciBike_Django_React.git
+
+Nos situaremos en la raiz del proyecto, en el que tenemos el docker-compose.yml.
+
+Ejecutamos:
+ - $ docker-compose up
+
+Cliente:http://0.0.0.0:3000/
+
+Server: http://0.0.0.0:8000/admin/
+        http://0.0.0.0:8000/api/
 
 
 
