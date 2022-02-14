@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 class Bike(models.Model):
 
     serialNumber = models.CharField(max_length=100,unique=True)             # numero serie.
@@ -16,3 +16,14 @@ class Bike(models.Model):
     def __str__(self):
         return self.serialNumber 
 
+class RentBike(models.Model):
+
+    user = models.ForeignKey('profiles.Profile', related_name='profiles', on_delete=models.CASCADE, null=True)
+    slot = models.ForeignKey( 'stations.Slot', related_name='slots', on_delete=models.SET_NULL, null=True)
+    bike = models.OneToOneField('bikes.Bike',related_name ='bikes', on_delete=models.CASCADE,null=True)
+    date_start = models.DateTimeField(default=timezone.now())
+    date_finish  = models.DateTimeField(null=True)
+    from_station = models.ForeignKey( 'stations.Station', related_name='station_from', on_delete=models.SET_NULL, null=True)
+    to_station = models.ForeignKey( 'stations.Station', related_name='station_to', on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return str(self.user)

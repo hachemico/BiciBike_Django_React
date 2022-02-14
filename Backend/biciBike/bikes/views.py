@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
-from .serializers import BikeSerializer, BikeListSerializer, BikeDetailSerializer
+from .serializers import BikeSerializer, BikeListSerializer, BikeDetailSerializer,BikeRentSerializer
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
@@ -62,7 +62,6 @@ class BikeRetrieveAPIView(RetrieveAPIView):
 class BikeFavoriteAPIView(APIView):
 
     permission_classes = (IsAuthenticated,)
-    # permission_classes = (AllowAny,)
     serializer_class = BikeSerializer
 
     def post(self, request, serialNumber=None):
@@ -105,3 +104,54 @@ class BikeFavoriteAPIView(APIView):
         serializer = self.serializer_class(bike, context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BikeRentAPIView(generics.ListCreateAPIView):
+
+    # print("BIKE RENT APIVIEW")
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = BikeRentSerializer
+    
+    def create(self, request):
+        print("VALOR SLOT")
+        print(request.user.profile.id)
+        # print(request.data['rent']['slot'])
+        serializer_context = {
+            'user': request.user.profile.id,
+            'slot': request.data['rent']['slot'],
+            'request': request
+        }
+        print("BIKE RENT APIVIEW")
+        # serializer_data = request.data.station
+
+        serializer_data = request.data.get('rent', {})
+
+        serializer = self.serializer_class(
+        data=serializer_data, context=serializer_context
+        
+        )
+
+        serializer.is_valid(raise_exception=True)
+        
+        serializer.save()
+        print("serializer_data")
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class BikeRentUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = BikeRentSerializer
+
+    def update(self,request):
+
+        print("dentro del update RENT")
+        print("VALOR SLOT")
+        print(request.user.profile.id)
+
+        serializer_context = {
+            'user': request.user.profile.id,
+            'slot': request.data['rent']['slot'],
+            'request': request
+        }
+        print(serializer_context)

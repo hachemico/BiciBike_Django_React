@@ -82,6 +82,6 @@ class ProfileFollowAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class ProfileFavoritesAPIView(APIView):
+# class ProfileFavoritesAPIView(APIView):
 
-    print("Entra profileFavoritesAPIView")
+#     # print("Entra profileFavoritesAPIView")
