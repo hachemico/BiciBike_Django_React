@@ -8,7 +8,7 @@ import RentService from "../../services/RentService";
 
 export default function Slot ({slot,index}) {
 
-  const {check_auth,addFav} = useUser()
+  const {check_auth,addFav,rentBike,backBike} = useUser()
 
 
   const toRent = ({slot}) => {
@@ -16,15 +16,28 @@ export default function Slot ({slot,index}) {
     if(check_auth() === true){ //comprovamos que hay token.
 
       console.log("hay token")
-      RentService.postRent(slot)
+      console.log("valor SLOT>> "+slot.name)
+      rentBike({slot})
       //IR AL HOOK --> service --> Server
     }else{
       console.log("no hay token")
-
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
-
   }
+  const backRent = ({slot}) => {
+  
+    if(check_auth() === true){ //comprovamos que hay token.
+
+      console.log("hay token")
+      console.log("valor SLOT>> "+slot.name)
+      backBike({slot})
+      //IR AL HOOK --> service --> Server
+    }else{
+      console.log("no hay token")
+      //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+    }
+  }
+
 
   const toFav = ({slot}) => {
     console.log("click fav!!");
@@ -43,9 +56,15 @@ export default function Slot ({slot,index}) {
 
   }
 
-
-
- 
+  let rentButton =slot.id_bike !== null
+              ? <Button variant="success" onClick={() => toRent({slot})}>Alquilar</Button>
+              : <Button variant="warning" onClick={() => backRent({slot})}>SLOT VACIO</Button>;
+  let bikeID = slot.id_bike !== null
+                  ? <h5>Bicicleta Nº {slot.id_bike}</h5> 
+                  : <h5>BiciBike</h5>;
+  let favButton = slot.id_bike !== null
+                  ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favorito</Button>
+                  : '';
   return (
       <>
      
@@ -57,17 +76,12 @@ export default function Slot ({slot,index}) {
             <h4 className="card-title">SLOT {index}</h4>
             <div className="card-text flex-row mb-3" >
                   <div className="datos">
-                    <h5>Id Bike {slot.id_bike}</h5>
-                  </div>
-                  <div className="status">
-
-                    <h6>Estado: {slot.status}</h6>
+                    {bikeID}
                   </div>
             </div>
-
-            <Button variant="success" onClick={() => toRent({slot})}>Alquilar</Button>
+            {rentButton}
             <br/>
-            <Button variant="info" onClick={() => toFav({slot})}>Añadir favorito</Button>
+            {favButton}
           </div>
         </div>
       </>

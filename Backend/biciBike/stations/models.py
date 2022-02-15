@@ -16,18 +16,20 @@ class Station(models.Model):
         return self.name
 
 class Slot(models.Model):
-    # name     = models.CharField(max_length=300) 
-    
+    name     = models.CharField(max_length=300, blank=True, default='' )
+    # slot        = models.CharField(max_length=100, blank=True)
     station     = models.ForeignKey('stations.Station', related_name='slots', on_delete=models.CASCADE, null=True)
-    id_bike     = models.OneToOneField('bikes.Bike', related_name='slots', on_delete=models.SET_NULL, null=True)
+    id_bike     = models.OneToOneField('bikes.Bike', related_name='slots', on_delete=models.SET_NULL, null=True, blank=True)
     status      = models.CharField(max_length=300)                
     #it will be an image field but for now working with third party urls
     # author = models.ForeignKey("Author",on_delete=models.SET_NULL,null=True)
     # category = models.ManyToManyField("Category")
     def __str__(self):
         campos=(
+            self.name,
             self.station,
             self.id_bike,
             self.status
+            
         )
         return str(campos)

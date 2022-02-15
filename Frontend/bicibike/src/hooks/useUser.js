@@ -3,7 +3,10 @@ import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
 import Context from "../context/UserContext";
 import { useNavigate } from 'react-router-dom';
-import UserService from '../services/UserService'
+import UserService from '../services/UserService';
+import RentService from '../services/RentService';
+
+
 export default function useUser(){
 
   // const { jwt, setJWT} = useContext(Context)
@@ -73,11 +76,38 @@ const registerForm = useCallback(
     return false
   }
 
-  const rentBike = useCallback(() => {
+  const rentBike = useCallback(({slot}) => {
     console.log("entra hook-useUser --> rentBike")
-    // window.sessionStorage.removeItem('jwt')
-    // setJWT(null)
-  // }, [setJWT])
+    console.log(slot)
+    RentService.postRent(slot.name)
+    // .then(setFavs)
+    .then(data=>{
+      console.log("VALOR RENT>> "+data)
+      console.log(data[0])
+      console.log(data.data)
+      console.log(data.slots)
+      
+    })
+   
+    .catch(err => {
+      console.error(err)
+    })
+}, [])
+
+const backBike = useCallback(({slot}) => {
+  console.log("entra hook-useUser --> rentBike")
+  console.log(slot)
+  RentService.postUpdateRent(slot.name)
+  // .then(setFavs)
+  .then(data=>{
+    console.log("VALOR RENT>> "+data)
+    console.log(data.data)
+    
+  })
+ 
+  .catch(err => {
+    console.error(err)
+  })
 }, [])
 
 
@@ -125,6 +155,7 @@ const unFav = useCallback(({slot}) => {
     loginForm,
     logout,
     rentBike,
+    backBike,
     addFav,
     unFav,
     favs

@@ -6,8 +6,16 @@ const RentService = {
         console.log("entre postRent - RentService")
         console.log(slot) 
         //COMPLETAR MODO DE ENVIO DE DATOS PARA ALQUILER.
-        let params = {}
-        return ApiService().post(`user/rent`, params);
+        let params = {rent:{slot:slot}}
+        return ApiService().post(`bikes/rent`, params);
+    },
+    postUpdateRent(slot) {
+        console.log("entre postUPDATE-Rent - RentService")
+        console.log(slot) 
+        //COMPLETAR MODO DE ENVIO DE DATOS PARA ALQUILER.
+        let params = {rent:{slot:slot}}
+        //  let params = {}
+        return ApiService().post(`bikes/rentUpdate`, params);
     },
 
     // getOne(name) { //detail de la estacion para ver los Slots de la estación.

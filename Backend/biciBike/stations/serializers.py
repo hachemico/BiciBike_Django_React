@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Station, Slot
 
-from biciBike.bikes.serializers import BikeSerializer
+# from biciBike.bikes.serializers import BikeSerializer
 
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +40,8 @@ class SlotSerializer(serializers.ModelSerializer):
         fields = [
             'station',
             'id_bike',
-            'status'
+            'status',
+            'name'
         ]
 
 class StationRetrieveSerializer(serializers.ModelSerializer): #Serializer Slots por Stacion.
