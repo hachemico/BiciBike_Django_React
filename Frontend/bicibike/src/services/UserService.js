@@ -2,6 +2,12 @@ import ApiService from "./ApiService";
 
 class UserService {
   
+  isAdmin(){
+    console.log("getFavs - UserService")
+    return ApiService().get(`user/isAdmin`);
+  //   console.log(slot)
+  }
+
   postAddFav(slot) {
 
     console.log(slot)
@@ -16,6 +22,7 @@ class UserService {
   //   console.log(slot)
   }
 
+ 
   // }
   // getUserBoard() {                  //quitar headers... apiservice, envia token siempre.
   //   return axios.get(API_URL + 'user', { headers: authHeader() }); 

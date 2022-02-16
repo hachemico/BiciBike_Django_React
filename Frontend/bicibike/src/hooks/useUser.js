@@ -12,8 +12,9 @@ import RentService from '../services/RentService';
 
 export default function useUser(){
 
-const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting} = useContext(UserContext)
+const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,admin,setAdmin} = useContext(UserContext)
 const {rent,setRent} = useContext(RentContext)
+const {user,setUser} = useContext(RentContext)
 const [state, setState] = useState()
 
 let navigate = useNavigate();
@@ -69,7 +70,9 @@ const registerForm = useCallback(
     console.log("entra hook-useUser --> logout")
     window.sessionStorage.removeItem('token')
     setJWT(null)
-  }, [setJWT])
+    setAdmin(null)
+    setUser(null)
+  }, [jwt,setJWT])
 
   const check_auth = () => {
     
@@ -78,6 +81,30 @@ const registerForm = useCallback(
     }
     return false
   }
+
+  const isAdmin = useCallback(()=>{
+    console.log("entra hook-user --> ")
+    UserService.isAdmin()
+    .then((data)=>{
+          console.log(data)
+          console.log(data.data.user.is_staff)
+
+          if(data.data.user.is_staff===true){
+            setAdmin(true)
+            setUser(data.data.user)
+          }else{
+            setAdmin(null)
+          }
+          //COMPROVAR QUE EL data.is_staff == true para set ADMIN
+
+    })
+    .catch((err) => {
+      console.log(err);
+      setState({loading: false, error: true })
+    });
+
+  })
+
 
   const rentBike = useCallback(({slot}) => {
     console.log("entra hook-useUser --> rentBike")
@@ -127,7 +154,7 @@ const addFav = useCallback(({slot}) => {
       console.error(err)
     })
 }, [setFavs]) 
-// }, []) 
+
 
 const unFav = useCallback(({slot}) => {
   console.log("Entra delFAv - USERHOOK")
@@ -161,7 +188,8 @@ const unFav = useCallback(({slot}) => {
     backBike,
     addFav,
     unFav,
-    favs
+    favs,
+    isAdmin
     
   }
 

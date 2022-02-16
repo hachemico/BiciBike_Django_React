@@ -6,6 +6,7 @@ const Context = React.createContext({})
 
 export function UserContextProvider ({children}) {
   const [favs, setFavs] = useState([])
+  const [admin, setAdmin] = useState([])
   const [jwt, setJWT] = useState(
     () => window.sessionStorage.getItem('token')
   )
@@ -23,9 +24,11 @@ export function UserContextProvider ({children}) {
     favs,
     jwt,
     isRenting,
+    admin,
     setFavs,
     setJWT,
-    setIsRenting
+    setIsRenting,
+    setAdmin,
   }}>
     {children}
   </Context.Provider>

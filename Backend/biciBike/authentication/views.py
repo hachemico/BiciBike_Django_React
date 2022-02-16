@@ -109,7 +109,7 @@ class UserAdminAPIView(RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
 
-        print("USER IS ADMIN ")
+        print("USER IS STAFF ")
         print(request.user)
         queryset= User.objects.get(id=request.user.id)
         print(queryset)
