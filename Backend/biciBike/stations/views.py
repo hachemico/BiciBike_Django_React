@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
-from .serializers import StationSerializer, StationListSerializer, StationRetrieveSerializer, StationSlotSerializer
+from .serializers import (  StationSerializer, 
+                            StationListSerializer,
+                            StationRetrieveSerializer, 
+                            StationSlotSerializer)
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,)
@@ -59,6 +62,25 @@ class StationRetrieveAPIView(generics.RetrieveAPIView):      ##Obtenemos los SLO
         print(filters)
         return queryset.filter(**filters)
     
+# class StationIDRetrieveAPIView(generics.RetrieveAPIView):
+   
+#     print("STATION ID RETRIEVE")
+
+#     lookup_field = 'id'
+#     lookup_url_kwarg = 'name'
+#     queryset = Station.objects.all().prefetch_related('slots')           #obtenemos todas las estaciones. SE PUEDE QUITAR EL PREFETCH?¿?¿¿? PROVAR
+#     permission_classes = (AllowAny,)
+#     serializer_class = StationRetrieveSerializer 
+   
+    
+#     def filter_queryset(self, queryset):
+#         # The built-in list function calls `filter_queryset`. Since we only
+#         # want comments for a specific article, this is a good place to do
+#         # that filtering.
+#         print('*********** DEBUG RETRIEVE ID ************')
+#         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
+#         print(filters)
+#         return queryset.filter(**filters)
 
 
 

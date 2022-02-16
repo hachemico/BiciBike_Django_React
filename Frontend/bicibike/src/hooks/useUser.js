@@ -2,6 +2,9 @@ import { useState,useContext,useCallback } from "react";
 import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
 import Context from "../context/UserContext";
+// import  StationsContext  from '../context/StationsContext';
+
+import  RentContext from '../context/RentContext'
 import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
 import RentService from '../services/RentService';
@@ -9,10 +12,10 @@ import RentService from '../services/RentService';
 
 export default function useUser(){
 
-  // const { jwt, setJWT} = useContext(Context)
 const { jwt, setJWT,favs,setFavs} = useContext(Context)
+const {rent,setRent} = useContext(RentContext)
 const [state, setState] = useState()
-// const [ setState] = useState()
+
 let navigate = useNavigate();
 
 const loginForm = useCallback(({email, password}) => {
@@ -80,14 +83,12 @@ const registerForm = useCallback(
     console.log("entra hook-useUser --> rentBike")
     console.log(slot)
     RentService.postRent(slot.name)
-    // .then(setFavs)
-    .then(data=>{
-      console.log("VALOR RENT>> "+data)
-      console.log(data[0])
-      console.log(data.data)
-      console.log(data.slots)
-      
-    })
+    .then(setRent)
+    // .then(data=>{
+    //   console.log("VALOR RENT>> "+data)
+    //   console.log(data.data.from_station)
+    //   setRent(data.data.from_station)
+    // })
    
     .catch(err => {
       console.error(err)
@@ -98,13 +99,8 @@ const backBike = useCallback(({slot}) => {
   console.log("entra hook-useUser --> rentBike")
   console.log(slot)
   RentService.postUpdateRent(slot.name)
-  // .then(setFavs)
-  .then(data=>{
-    console.log("VALOR RENT>> "+data)
-    console.log(data.data)
-    
-  })
- 
+  .then(setRent)
+
   .catch(err => {
     console.error(err)
   })

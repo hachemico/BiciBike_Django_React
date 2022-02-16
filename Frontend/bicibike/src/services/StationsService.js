@@ -13,6 +13,13 @@ const StationsService = {
         return ApiService().get(`stations/${name}/slots`);
     },
 
+    getOneId(id) { //detail de la estacion para ver los Slots de la estación.
+        console.log("entre getOne StationService")
+        console.log(id)
+
+          return ApiService().get(`stations/${id}/slotsId`);
+      },
+  
     //   add(params) {
     
     //     return ApiService().post(`users/`, params);

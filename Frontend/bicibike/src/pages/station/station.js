@@ -11,13 +11,11 @@ export default function Station(){
     
     const params= useParams()
     console.log(params)
-    // const {station} = useSingleStations();
 
     const {singleStation} = useSingleStations({params});
 
    console.log(singleStation)
-//    console.log(singleStation.name)
-//    console.log(singleStation.slots)
+
 
 const divStyle ={
     color:'black'

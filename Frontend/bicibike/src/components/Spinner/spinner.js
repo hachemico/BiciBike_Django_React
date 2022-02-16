@@ -7,7 +7,7 @@ export default function Spinner () {
         <div className='container'>
             <div className='d-flex flex-column justify-content-center'>
                 <div className='d-flex align-self-center'>
-                    <div class="spinner"></div>
+                    <div className="spinner"></div>
                 </div>
                 <h4>CARGANDO...</h4>
             </div>

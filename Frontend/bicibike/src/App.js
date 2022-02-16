@@ -12,6 +12,7 @@ import Stations  from './pages/stations/stations'
 import './App.css'
 import { StationsContextProvider } from "./context/StationsContext";
 import { UserContextProvider } from "./context/UserContext";
+import { RentsContextProvider } from "./context/RentContext";
 
 function App() {
   return (
@@ -22,14 +23,17 @@ function App() {
           <Header/>
             <main>
               <StationsContextProvider>
+              <RentsContextProvider>
                 <Routes>
-                <Route path="/"               element={ <Home/> }     />
-                <Route path="/login"          element={ <Login/> }    />
-                <Route path="/register"       element={ <Register/> }    />
-                <Route path="/station/:name"  element={ <Station/> } />
-                <Route path="/stations"       element={ <Stations/> } />
-               
+
+                  <Route path="/"               element={ <Home/> }     />
+                  <Route path="/login"          element={ <Login/> }    />
+                  <Route path="/register"       element={ <Register/> }    />
+                  <Route path="/station/:name"  element={ <Station/> } />
+                  <Route path="/stations"       element={ <Stations/> } />
+                
                 </Routes>
+              </RentsContextProvider>
               </StationsContextProvider>
             </main>
             <Footer/>

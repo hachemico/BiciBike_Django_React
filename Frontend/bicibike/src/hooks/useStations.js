@@ -5,6 +5,7 @@ import StationsService from '../services/StationsService'
 export function useStations(){
 
     const { stations, setStations } = useContext(StationsContext)
+    const { rent, setRent } = useContext(StationsContext)
     // const [error, setError]         = useState(false);
     const [loading, setLoading]     = useState(false)
   
@@ -21,7 +22,7 @@ export function useStations(){
   
       // },[loading,stations]) //end_useEffect
     }) 
-    },[setLoading,setStations]); //end_useEffect
+    },[setLoading,setStations,rent]); //end_useEffect
 
 
 
