@@ -1,14 +1,15 @@
-import React from "react";
+import React,{useContext} from "react";
 import './slot.css'
 import SlotImg from '../../assets/SLOT.png'
 import Button from 'react-bootstrap/Button'
 import useUser from "../../hooks/useUser";
-import RentService from "../../services/RentService";
+import UserContext from "../../context/UserContext"
 
 
 export default function Slot ({slot,index}) {
 
   const {check_auth,addFav,rentBike,backBike} = useUser()
+  const {isRenting,setIsRenting} = useContext(UserContext)
 
 
   const toRent = ({slot}) => {
@@ -18,7 +19,6 @@ export default function Slot ({slot,index}) {
       console.log("hay token")
       console.log("valor SLOT>> "+slot.name)
       rentBike({slot})
-      //IR AL HOOK --> service --> Server
     }else{
       console.log("no hay token")
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
@@ -31,7 +31,7 @@ export default function Slot ({slot,index}) {
       console.log("hay token")
       console.log("valor SLOT>> "+slot.name)
       backBike({slot})
-      //IR AL HOOK --> service --> Server
+
     }else{
       console.log("no hay token")
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
@@ -47,7 +47,7 @@ export default function Slot ({slot,index}) {
       console.log("hay token")
 
       addFav({slot})
-      //IR AL HOOK --> service --> Server
+
     }else{
       console.log("no hay token")
 
@@ -55,16 +55,27 @@ export default function Slot ({slot,index}) {
     }
 
   }
-
-  let rentButton =slot.id_bike !== null
+    //RENDERIZA LOS BOTTONES DEPENDIENDO DE SI HAY ALQUILER O NO.
+    let rentButton1 =
+              slot.id_bike !== null
               ? <Button variant="success" onClick={() => toRent({slot})}>Alquilar</Button>
+              : <Button variant="warning" disabled >SLOT VACIO</Button>;
+    let rentButton2 =
+              slot.id_bike !== null
+              ? <Button variant="success" disabled > Alquilar</Button>
               : <Button variant="warning" onClick={() => backRent({slot})}>SLOT VACIO</Button>;
-  let bikeID = slot.id_bike !== null
-                  ? <h5>Bicicleta Nº {slot.id_bike}</h5> 
-                  : <h5>BiciBike</h5>;
-  let favButton = slot.id_bike !== null
-                  ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favorito</Button>
-                  : '';
+              
+    let bikeID = slot.id_bike !== null
+              ? <h5>Bicicleta Nº {slot.id_bike}</h5> 
+              : <h5>BiciBike</h5>;
+    let favButton = slot.id_bike !== null
+              ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favorito</Button>
+              : '';
+
+  let rentButton = ''
+  
+  isRenting? rentButton=rentButton2 : rentButton=rentButton1
+
   return (
       <>
      

@@ -9,6 +9,9 @@ export function UserContextProvider ({children}) {
   const [jwt, setJWT] = useState(
     () => window.sessionStorage.getItem('token')
   )
+  const [isRenting, setIsRenting] = useState(
+    () => window.sessionStorage.getItem('isRenting')
+  )
 
   useEffect(() => {
     if (!jwt) return setFavs([])
@@ -19,8 +22,10 @@ export function UserContextProvider ({children}) {
   return <Context.Provider value={{
     favs,
     jwt,
+    isRenting,
     setFavs,
-    setJWT
+    setJWT,
+    setIsRenting
   }}>
     {children}
   </Context.Provider>

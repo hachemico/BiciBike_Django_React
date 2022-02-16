@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +9,7 @@ from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
 )
-
+from biciBike.core.permissions import IsStaff
 
 #Admin
 class UserViewSet(viewsets.ModelViewSet):
@@ -101,3 +101,28 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
  
+class UserAdminAPIView(RetrieveAPIView):
+
+    permission_classes = (IsAuthenticated,IsStaff)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = UserSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+
+        print("USER IS ADMIN ")
+        print(request.user)
+        queryset= User.objects.get(id=request.user.id)
+        print(queryset)
+        print(queryset.is_staff)
+        serializer = self.serializer_class(queryset)
+        # try:
+        #     bike = self.queryset.get(serialNumber=serialNumber)
+        # except Bike.DoesNotExist:
+        #     return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        # serializer = self.serializer_class(bike, context={
+        #     'request': request
+        # })
+        # pint('*********** serializer.data ************') 
+        # print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,7 +1,7 @@
 import { useState,useContext,useCallback } from "react";
 import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
-import Context from "../context/UserContext";
+import UserContext from "../context/UserContext";
 // import  StationsContext  from '../context/StationsContext';
 
 import  RentContext from '../context/RentContext'
@@ -12,7 +12,7 @@ import RentService from '../services/RentService';
 
 export default function useUser(){
 
-const { jwt, setJWT,favs,setFavs} = useContext(Context)
+const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting} = useContext(UserContext)
 const {rent,setRent} = useContext(RentContext)
 const [state, setState] = useState()
 
@@ -83,28 +83,38 @@ const registerForm = useCallback(
     console.log("entra hook-useUser --> rentBike")
     console.log(slot)
     RentService.postRent(slot.name)
-    .then(setRent)
-    // .then(data=>{
-    //   console.log("VALOR RENT>> "+data)
-    //   console.log(data.data.from_station)
-    //   setRent(data.data.from_station)
-    // })
+    // .then(setRent)
+    .then(data=>{
+      console.log("VALOR RENT>> "+data)
+      console.log(data.data.from_station)
+      setRent(data)
+
+      window.sessionStorage.setItem('isRenting', true)
+      setIsRenting(true)
+    })
    
     .catch(err => {
       console.error(err)
     })
-}, [])
+}, [setIsRenting,setRent])
 
 const backBike = useCallback(({slot}) => {
   console.log("entra hook-useUser --> rentBike")
   console.log(slot)
   RentService.postUpdateRent(slot.name)
-  .then(setRent)
-
+  // .then(setRent)
+  .then(data=>{
+    console.log("VALOR RENT>> "+data)
+    console.log(data.data.from_station)
+    setRent(data)
+    window.sessionStorage.removeItem('isRenting')
+    setIsRenting(null)
+  })
+ 
   .catch(err => {
     console.error(err)
   })
-}, [])
+}, [setRent,setIsRenting])
 
 
 const addFav = useCallback(({slot}) => {
@@ -116,7 +126,7 @@ const addFav = useCallback(({slot}) => {
     .catch(err => {
       console.error(err)
     })
-}, [jwt, setFavs]) 
+}, [setFavs]) 
 // }, []) 
 
 const unFav = useCallback(({slot}) => {
@@ -138,12 +148,9 @@ const unFav = useCallback(({slot}) => {
 }, []) 
 
 
-
-  // console.log("valor booleanJWT")
-  // console.log(Boolean(jwt))
-
   return {
     isLogged: Boolean(jwt),
+    isRenting: Boolean(isRenting),
     // isLoginLoading: state.loading,
     // hasLoginError: state.error,
     check_auth,
