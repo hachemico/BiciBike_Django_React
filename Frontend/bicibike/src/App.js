@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
+import AdminPanel from './pages/adminPanel/adminPanel'
 import Footer from "./components/Footer/footer"
 import Header from "./components/Header/header"
 import Home  from './pages/home/home'
@@ -14,6 +15,7 @@ import { StationsContextProvider } from "./context/StationsContext";
 import { UserContextProvider } from "./context/UserContext";
 import { RentsContextProvider } from "./context/RentContext";
 
+
 function App() {
   return (
       <Router>
@@ -25,7 +27,7 @@ function App() {
               <StationsContextProvider>
               <RentsContextProvider>
                 <Routes>
-
+                  <Route path="/adminPanel"     element={ <AdminPanel/> }     />
                   <Route path="/"               element={ <Home/> }     />
                   <Route path="/login"          element={ <Login/> }    />
                   <Route path="/register"       element={ <Register/> }    />

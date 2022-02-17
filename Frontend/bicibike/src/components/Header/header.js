@@ -1,9 +1,12 @@
 import React , {useContext,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import './header.css'
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container , NavLink} from 'react-bootstrap';
 import useUser from '../../hooks/useUser';
 import UserContext from '../../context/UserContext'
+import SlotImg from '../../assets/SLOT.png'
+
+
 export default function Header(){
 
     const{isLogged, logout ,isAdmin} = useUser()
@@ -30,15 +33,27 @@ export default function Header(){
         if(isLogged === true){ //depende de si esta logueado muestra una menu u otro.
             return ( 
                 <div className='row'>
-                    <Navbar collapseOnSelect expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='dark' variant='dark'>
                         <Container>
-                            <Navbar.Toggle aria-controls='responsive-navbar-nav'/>
-                            <Navbar.Collapse id='responsive-navbar-nav' />
-                            <Nav>
-                            <Link to ='/'>Home</Link>
+                            <Link to ='/'>
+                                <Navbar.Brand>
+                                    <img
+                                    alt=""
+                                    src={SlotImg}
+                                    width="30"
+                                    height="30"
+                                    className="d-inline-block align-top"
+                                    />{' '}
+                                </Navbar.Brand>
+                            BICIBIKE</Link>
+                            <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+                            <Navbar.Collapse id='basic-navbar-nav' >
+                            <Nav className="mr-auto">
+                                <Link to ='/'>Home</Link>
                                 <Link to ='/stations'>Estaciones</Link>
                                 <Link to ='#' onClick={handleClick}>Logout</Link>                                
                             </Nav>
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
                 </div>
@@ -46,16 +61,29 @@ export default function Header(){
         }else{
             return (
                 <div className='row'>
-                    <Navbar collapseOnSelect expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='dark' variant='dark'>
                         <Container>
-                            <Navbar.Toggle aria-controls='responsive-navbar-nav'/>
-                            <Navbar.Collapse id='responsive-navbar-nav' />
-                            <Nav>
+                            <Link to ='/'>
+                                    <Navbar.Brand>
+                                        <img
+                                        alt=""
+                                        src={SlotImg}
+                                        width="30"
+                                        height="30"
+                                        className="d-inline-block align-top"
+                                        />{' '}
+                                
+                                    </Navbar.Brand>
+                                BICIBIKE</Link>
+                                <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+                                <Navbar.Collapse id='basic-navbar-nav' >
+                                <Nav className="mr-auto">
                                 <Link to ='/'>Home</Link>
                                 <Link to ='/stations'>Estaciones</Link>
                                 <Link to ='/register'>Registrate</Link>
                                 <Link to ='/login'>Login</Link>
                             </Nav>
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
                 </div>
@@ -68,16 +96,29 @@ export default function Header(){
         console.log("RenderAdminLogged")
         return ( 
                 <div className='row'>
-                    <Navbar collapseOnSelect expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='dark' variant='dark'>
                         <Container>
-                            <Navbar.Toggle aria-controls='responsive-navbar-nav'/>
-                            <Navbar.Collapse id='responsive-navbar-nav' />
-                            <Nav>
-                            <Link to ='/'>Home</Link>
+                            <Link to ='/'>
+                                <Navbar.Brand>
+                                    <img
+                                    alt=""
+                                    src={SlotImg}
+                                    width="30"
+                                    height="30"
+                                    className="d-inline-block align-top"
+                                    />{' '}
+                            
+                                </Navbar.Brand>
+                            BICIBIKE</Link>
+                            <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+                            <Navbar.Collapse id='basic-navbar-nav' >
+                            <Nav className="mr-auto">
+                                <Link to ='/'>Home</Link>
                                 <Link to ='/stations'>Estaciones</Link>
-                                <Link to ='/panelAdmin'>PanelAdmin</Link>
-                                <Link to ='#' onClick={handleClick}>Logout</Link>                                
+                                <Link to ='/adminPanel'>PanelAdmin</Link>
+                                <Link to ='#' onClick={handleClick}>Logout</Link>                              
                             </Nav>
+                            </Navbar.Collapse>
                         </Container>
                     </Navbar>
                 </div>

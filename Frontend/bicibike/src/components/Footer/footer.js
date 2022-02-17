@@ -9,7 +9,7 @@ export default function Footer(){
     return (
       <>
 
-    <footer className="page-footer bg-dark font-small blue pt-4">
+    <footer className="page-footer bg-dark font-small blue pt-4 fixed mt-3">
     <div className="container-fluid text-center text-md-left">
         <div className="row">
             <div className="col-md-6 mt-md-0 mt-3">
@@ -41,9 +41,7 @@ export default function Footer(){
         </div>
     </div>
 
-    <div className="footer-copyright text-center py-3">©Copyright - 
-        <a href="/stations"> BiciBike2022</a>
-    </div>
+    <div className="footer-copyright text-center py-3">©Copyright BiciBike2022</div>
 
 </footer>
       </>

@@ -12,7 +12,7 @@ export default function Home() {
 return (
 //    <StationsList stations={stations}/>
 <div>
-    <p>Home</p>
+
     < Carousel/>
     
 </div>
