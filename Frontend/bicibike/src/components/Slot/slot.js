@@ -1,6 +1,7 @@
 import React,{useContext} from "react";
 import './slot.css'
 import SlotImg from '../../assets/SLOT.png'
+import OutImg from '../../assets/OUTSERVICE.png'
 import Button from 'react-bootstrap/Button'
 import useUser from "../../hooks/useUser";
 import UserContext from "../../context/UserContext"
@@ -10,6 +11,7 @@ export default function Slot ({slot,index}) {
 
   const {check_auth,addFav,rentBike,backBike} = useUser()
   const {isRenting,setIsRenting} = useContext(UserContext)
+
 
 
   const toRent = ({slot}) => {
@@ -56,32 +58,51 @@ export default function Slot ({slot,index}) {
 
   }
     //RENDERIZA LOS BOTTONES DEPENDIENDO DE SI HAY ALQUILER O NO.
-    let rentButton1 =
-              slot.id_bike !== null
-              ? <Button variant="success" onClick={() => toRent({slot})}>Alquilar</Button>
-              : <Button variant="warning" disabled >SLOT VACIO</Button>;
-    let rentButton2 =
-              slot.id_bike !== null
-              ? <Button variant="success" disabled > Alquilar</Button>
-              : <Button variant="warning" onClick={() => backRent({slot})}>SLOT VACIO</Button>;
-              
-    let bikeID = slot.id_bike !== null
-              ? <h5>Bicicleta Nº {slot.id_bike}</h5> 
-              : <h5>BiciBike</h5>;
-    let favButton = slot.id_bike !== null
-              ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favorito</Button>
-              : '';
+  let rentButton1 =
+          slot.bike !== null
+            ? <Button variant="success" onClick={() => toRent({slot})}>Alquilar</Button>
+            : <Button variant="warning" disabled >SLOT VACIO</Button>;
 
-  let rentButton = ''
+  let rentButton2 =
+          slot.bike !== null
+            ? <Button variant="success" disabled > Alquilar</Button>
+            : <Button variant="warning" onClick={() => backRent({slot})}>SLOT VACIO</Button>;
+              
+  let bikeID = slot.bike !== null
+            ? <h5>Bicicleta Nº {slot.bike.serialNumber}</h5> 
+            : <h5>BiciBike</h5>;
   
-  isRenting? rentButton=rentButton2 : rentButton=rentButton1
+  let rentButton = ''
+  let imageSrc = ''
+  let favButton= ''
+  
+  if(slot.bike !== null){ //condicional biciDisponible modif. src/image
+      if(slot.bike.available === true){
+        imageSrc= SlotImg
+        favButton=<Button variant="info" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+        isRenting? rentButton=rentButton2 : rentButton=rentButton1
+
+      }else{
+        imageSrc= OutImg
+        rentButton= <Button variant="danger" disabled > FUERA DE SERVICIO</Button>
+      }
+  }else{
+    imageSrc = SlotImg
+    favButton = slot.bike !== null
+              ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+              : '';
+              
+    isRenting? rentButton=rentButton2 : rentButton=rentButton1
+  }
+  console.log("COMPONENT-SLOT -> Valor SLOT")
+  console.log(slot)
 
   return (
       <>
-     
+
         <div className ="card d-flex flex-column mt-2 col-3">
           <div className="img-div mt-2">
-            <img src={SlotImg} className=" card-img-top " alt="Imagen Estación Poliesportiu"/>
+            <img src={imageSrc} className=" card-img-top " alt="Imagen Estación Poliesportiu"/>
           </div>
           <div className="card-body d-flex flex-column">
             <h4 className="card-title">SLOT {index}</h4>

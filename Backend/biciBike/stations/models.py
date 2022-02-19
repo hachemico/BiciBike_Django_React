@@ -19,8 +19,9 @@ class Slot(models.Model):
     name     = models.CharField(max_length=300, blank=True, default='' )
     # slot        = models.CharField(max_length=100, blank=True)
     station     = models.ForeignKey('stations.Station', related_name='slots', on_delete=models.CASCADE, null=True)
-    id_bike     = models.OneToOneField('bikes.Bike', related_name='slots', on_delete=models.SET_NULL, null=True, blank=True)
-    status      = models.CharField(max_length=300)                
+    bike     = models.OneToOneField('bikes.Bike', related_name='slots', on_delete=models.SET_NULL, null=True, blank=True)
+    status      = models.CharField(max_length=300)
+    # oneBike     = models.OneToOneField('bikes.Bike', related_name='oneBike', on_delete=models.SET_NULL, null=True, blank=True)        
     #it will be an image field but for now working with third party urls
     # author = models.ForeignKey("Author",on_delete=models.SET_NULL,null=True)
     # category = models.ManyToManyField("Category")
@@ -28,8 +29,9 @@ class Slot(models.Model):
         campos=(
             self.name,
             self.station,
-            self.id_bike,
+            self.bike,
             self.status
+            # self.oneBike
             
         )
         return str(campos)

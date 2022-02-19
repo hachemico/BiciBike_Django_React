@@ -2,15 +2,18 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import (RetrieveAPIView , UpdateAPIView, RetrieveUpdateDestroyAPIView)
+from rest_framework.exceptions import NotFound
+# from rest_framework.generics import (RetrieveAPIView , UpdateAPIView, RetrieveUpdateDestroyAPIView)
 from .serializers import (  BikeSerializer, 
                             BikeListSerializer,
                             BikeDetailSerializer,
                             BikeRentSerializer,
-                            BikeRentUpdateSerializer)
+                            BikeRentUpdateSerializer,
+                            )
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
+from biciBike.core.permissions import IsStaff
 from .models import Bike
 
 #Admin
@@ -43,7 +46,7 @@ class BikeListAPIView(generics.ListAPIView):
         }, status=status.HTTP_200_OK)
 
 
-class BikeRetrieveAPIView(RetrieveAPIView):
+class BikeRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = (AllowAny,)
     lookup_url_kwarg = 'serialNumber'
     queryset = Bike.objects.all()           #obtenemos todas las bicis.
@@ -108,6 +111,46 @@ class BikeFavoriteAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+# EDITANDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
+class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = BikeSerializer
+        
+    def update(self, request):
+    
+        print("ENTRA BIKE AVAILABLE")
+        print(request.data['bike']['at_use'])
+
+        serializer_context = {
+            'serialNumber': request.data['bike']['serialNumber'],
+            'available': request.data['bike']['available'],
+            'slot': request.data['bike']['slot'],
+            'station': request.data['bike']['station'],
+            'at_use': request.data['bike']['at_use'],
+            'request': request
+        }
+    
+        try: #validamos contra base de datos.
+            serializer_instance = Bike.objects.get(id=request.data['bike']['serialNumber'])
+
+        except Bike.DoesNotExist:
+             raise NotFound('No existe usuario con ese id')
+        serializer_data= request.data.get('bike',{})
+
+        serializer = self.serializer_class(
+            serializer_instance,
+            context=serializer_context, 
+            data=serializer_data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# EDITANDDDDDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 class BikeRentAPIView(generics.ListCreateAPIView):
 
@@ -119,7 +162,6 @@ class BikeRentAPIView(generics.ListCreateAPIView):
     def create(self, request):
         print("USER ID")
         print(request.user.profile.id)
-        # print(request.data['rent']['slot'])
         serializer_context = {
             'user': request.user.profile.id,
             'slot': request.data['rent']['slot'],

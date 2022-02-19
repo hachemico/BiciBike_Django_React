@@ -1,5 +1,4 @@
 # from re import I
-from pymysql import NULL
 from rest_framework import serializers
 
 from biciBike.stations.serializers import SlotSerializer
@@ -16,13 +15,16 @@ from biciBike.stations.serializers import StationSerializer
 from biciBike.profiles.serializers import ProfileSerializer
 
 from django.utils import timezone
+
 class BikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bike
         fields = [
             'serialNumber',
             'station',
-            'available'
+            'available',
+            'at_use',
+            'slot'
         ]
 
 class BikeListSerializer(serializers.ModelSerializer):
@@ -31,7 +33,9 @@ class BikeListSerializer(serializers.ModelSerializer):
         fields = [
         'serialNumber',
         'station',
-        'available'
+        'available',
+        'slot',
+        'at_use'
         ]
 
 class BikeDetailSerializer(serializers.ModelSerializer):
@@ -42,6 +46,8 @@ class BikeDetailSerializer(serializers.ModelSerializer):
         'available',
         'created_at'
         ]
+
+
 
 class BikeRentSerializer(serializers.ModelSerializer):
     # print("BIKE RENT SERIALIZER")
@@ -80,11 +86,11 @@ class BikeRentSerializer(serializers.ModelSerializer):
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')
 
-        rentBike= RentBike.objects.create(user = user,bike = slot.id_bike,from_station = slot.station, slot=slot , state = True)
+        rentBike= RentBike.objects.create(user = user,bike = slot.bike,from_station = slot.station, slot=slot , state = True)
 
-        refreshBike = Bike.objects.filter(id = str(slot.id_bike)).update( at_use = True , station = ' ', slot= ' ')
+        refreshBike = Bike.objects.filter(id = str(slot.bike)).update( at_use = True , station = ' ', slot= ' ')
 
-        refreshSlot = Slot.objects.filter(id = slot_id).update(id_bike = '', status = 'Disponible')
+        refreshSlot = Slot.objects.filter(id = slot_id).update(bike = '', status = 'Disponible')
         
         refreshUser = Profile.objects.filter(id=user_id).update(rentActive=True)
         return rentBike
@@ -149,7 +155,7 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
             
             print("Valor rent-BikeID DESPUES>> "+ str(aux))
             print("Valor slot-ID DESPUES>> "+ str(slot_id))
-            refreshSlot = Slot.objects.filter(id = slot_id).update(id_bike = aux, status = 'No Disponible')   
+            refreshSlot = Slot.objects.filter(id = slot_id).update(bike = aux, status = 'No Disponible')   
 
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')

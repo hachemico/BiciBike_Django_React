@@ -12,32 +12,43 @@ export default function AdminPanel(){
 
 return(
     <>
+    <div className="title bg-dark mt-1"><h2>PANEL ADMIN</h2></div>
+    <div className="panel mt-5 mb-5">
+    
     <div className="container">
         <div className="row">
-        <CardGroup className="">  
+        <CardGroup>  
         <Card className="">
-            <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>INCIDENCIAS</Link></Card.Title>
-            </Card.Body>
+            <Link to={`/`} className='Station-link text-dark text-decoration-none'>
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Body>
+                <Card.Title>INCIDENCIAS</Card.Title>
+                </Card.Body>
+            </Link>
         </Card>
         <Card className="">
-            <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>ALQUILERES</Link></Card.Title>
-            </Card.Body>
+            <Link to={`/`} className='Station-link text-dark text-decoration-none' >
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Body>
+                <Card.Title>ALQUILERES</Card.Title>
+                </Card.Body>
+            </Link>
         </Card>
         <Card className="">
-            <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>GESTIONAR BIKES</Link></Card.Title>
-            </Card.Body>
+            <Link to={`/adminPanel/bikes`} className='Station-link text-dark text-decoration-none'>
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Body>
+                <Card.Title>GESTIONAR BIKES</Card.Title>
+                </Card.Body>
+            </Link>
         </Card>
         <Card className="">
-            <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>GESTIONAR ESTACIONES</Link></Card.Title>
-            </Card.Body>
+            <Link to={`/`} className='Station-link text-dark text-decoration-none'>
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Body>
+                <Card.Title>GESTIONAR ESTACIONES</Card.Title>
+                </Card.Body>
+            </Link>
         </Card>
         </CardGroup>
 
@@ -63,6 +74,7 @@ return(
      
         </CardGroup> */}
         </div>
+    </div>
     </div>
     </>
 )
