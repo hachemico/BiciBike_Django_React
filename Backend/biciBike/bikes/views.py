@@ -1,4 +1,5 @@
 # from rest_framework import generics, mixins, status, viewsets
+import json
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,12 +10,15 @@ from .serializers import (  BikeSerializer,
                             BikeDetailSerializer,
                             BikeRentSerializer,
                             BikeRentUpdateSerializer,
+                            BikeCreateSerializer,
+                            BikeSlotSerializer,
                             )
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from biciBike.core.permissions import IsStaff
 from .models import Bike
+from biciBike.stations.models import Slot, Station
 
 #Admin
 class BikeViewSetAdmin(viewsets.ModelViewSet):
@@ -65,6 +69,34 @@ class BikeRetrieveAPIView(generics.RetrieveAPIView):
         print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class BikeCreateAPIView(APIView):
+  
+    permission_classes = (IsAuthenticated,IsStaff)
+    serializer_class = BikeCreateSerializer
+    serializer_slot = BikeSlotSerializer
+    
+    def post(self, request):
+       
+        serializer_context = {
+            'serialNumber': request.data['bike']['serialNumber'],
+            'available': request.data['bike']['available'],
+            'slot': request.data['bike']['slot'],
+            'station': request.data['bike']['station'],
+            'at_use': request.data['bike']['at_use'],
+            'request': request
+        }
+
+        serializer_data = request.data.get('bike', {})
+
+        serializer_bike = self.serializer_class( data=serializer_data, context=serializer_context)
+
+        serializer_bike.is_valid(raise_exception=True)
+        serializer_bike.save()
+
+        return Response(serializer_bike.data, status=status.HTTP_201_CREATED)
+
+
 class BikeFavoriteAPIView(APIView):
 
     permission_classes = (IsAuthenticated,)
@@ -111,7 +143,7 @@ class BikeFavoriteAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# EDITANDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+
 
 class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
 
@@ -149,8 +181,6 @@ class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
-# EDITANDDDDDOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 class BikeRentAPIView(generics.ListCreateAPIView):
 

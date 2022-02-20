@@ -1,16 +1,20 @@
 # from rest_framework import generics, mixins, status, viewsets
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
+
+from biciBike.bikes.models import Bike
 
 from .serializers import (  StationSerializer, 
                             StationListSerializer,
                             StationRetrieveSerializer, 
-                            StationSlotSerializer)
+                            StationSlotSerializer,
+                            SlotSerializer,)
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
-from rest_framework.permissions import (IsAdminUser, AllowAny,)
+from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from .models import Station, Slot
 
 class StationViewSetAdmin(viewsets.ModelViewSet):
@@ -54,34 +58,37 @@ class StationRetrieveAPIView(generics.RetrieveAPIView):      ##Obtenemos los SLO
    
     
     def filter_queryset(self, queryset):
-        # The built-in list function calls `filter_queryset`. Since we only
-        # want comments for a specific article, this is a good place to do
-        # that filtering.
-        print('*********** DEBUG ************')
+       
         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
-        print(filters)
+       
         return queryset.filter(**filters)
     
-# class StationIDRetrieveAPIView(generics.RetrieveAPIView):
-   
-#     print("STATION ID RETRIEVE")
 
-#     lookup_field = 'id'
-#     lookup_url_kwarg = 'name'
-#     queryset = Station.objects.all().prefetch_related('slots')           #obtenemos todas las estaciones. SE PUEDE QUITAR EL PREFETCH?¿?¿¿? PROVAR
-#     permission_classes = (AllowAny,)
-#     serializer_class = StationRetrieveSerializer 
-   
+
+
+class StationSlotUpdateAPIView(generics.UpdateAPIView): #Actualizar el Slot al crear una BIKE
     
-#     def filter_queryset(self, queryset):
-#         # The built-in list function calls `filter_queryset`. Since we only
-#         # want comments for a specific article, this is a good place to do
-#         # that filtering.
-#         print('*********** DEBUG RETRIEVE ID ************')
-#         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
-#         print(filters)
-#         return queryset.filter(**filters)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = SlotSerializer
 
+    def update(self, request):
+    
+        try: #validamos contra base de datos.
+            slot_instance = Slot.objects.get(id=request.data['slot']['slot'])
+
+        except Slot.DoesNotExist:
+             raise NotFound('No existe SLOT con ese id')
+
+        try: #validamos contra base de datos.
+            bike_instance = Bike.objects.get(id=request.data['slot']['bike'])
+          
+        except Bike.DoesNotExist:
+             raise NotFound('No existe bici con ese id')
+
+        updateSlot = Slot.objects.filter(id = slot_instance.id ).update(bike = bike_instance, status = 'No Disponible',name = slot_instance.id)       
+
+     
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class SlotViewSet(viewsets.ModelViewSet):

@@ -8,7 +8,8 @@ from .views import (
     BikeFavoriteAPIView,
     BikeRentAPIView,
     BikeRentUpdateAPIView,
-    BikeAvailableUpdateAPIView
+    BikeAvailableUpdateAPIView,
+    BikeCreateAPIView,
 )
 
 app_name = 'bikes'
@@ -20,6 +21,7 @@ router.register(r'bikes_Admin', BikeViewSetAdmin)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^bikes/?$', BikeListAPIView.as_view()), 
+    url(r'^bikes/create/?$', BikeCreateAPIView.as_view()), 
     url(r'^bikes/rent/?$',BikeRentAPIView.as_view()),
     url(r'^bikes/rentUpdate/?$',BikeRentUpdateAPIView.as_view()),
     url(r'^bikes/availableUpdate/?$',BikeAvailableUpdateAPIView.as_view()),

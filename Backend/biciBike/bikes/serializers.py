@@ -1,9 +1,10 @@
 # from re import I
+from ast import Global
 from rest_framework import serializers
 
 from biciBike.stations.serializers import SlotSerializer
 
-# from BiciBike_Django_React.Backend.biciBike.stations.serializers import SlotSerializer
+
 from .models import Bike, RentBike
 from rest_framework.exceptions import NotFound
 from biciBike.profiles.models import Profile
@@ -11,8 +12,6 @@ from biciBike.stations.models import Slot, Station
 from biciBike.bikes.models import Bike, RentBike
 
 from biciBike.stations.serializers import StationSerializer
-
-from biciBike.profiles.serializers import ProfileSerializer
 
 from django.utils import timezone
 
@@ -47,14 +46,48 @@ class BikeDetailSerializer(serializers.ModelSerializer):
         'created_at'
         ]
 
+class BikeCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Bike
+        fields = [
+            'serialNumber',
+            'station',
+            'available',
+            'at_use',
+            'slot'
+        ]
+        
+    def create(self, validated_data):
+        
+        valueBike = Bike.objects.create(serialNumber = self.context['serialNumber'],
+                                        available = self.context['available'], 
+                                        station=self.context['station'],
+                                        slot = self.context['slot'], 
+                                        at_use=self.context['at_use'])
+           
+        return valueBike
+
+
+
+class BikeSlotSerializer(serializers.ModelSerializer):
+   
+    bike= BikeSerializer(read_only = True)
+    class Meta:
+        model = Slot
+        fields = [
+            'station',
+            'bike',
+            'status',
+            'name'
+        ]
+
 
 
 class BikeRentSerializer(serializers.ModelSerializer):
-    # print("BIKE RENT SERIALIZER")
-    # date_start = serializers.SerializerMethodField(method_name='get_date_start')
+ 
     slot= StationSerializer(read_only = True)
-    # user = ProfileSerializer(read_only = True)
-
+   
     class Meta:
         model = RentBike
         fields = [
@@ -64,37 +97,36 @@ class BikeRentSerializer(serializers.ModelSerializer):
            'from_station',
            'date_start',
            'date_finish',
-
-        
         ]
+
     def create(self, validated_data):
 
         try: #validamos contra base de datos.
             user_id = self.context['user']
             user = Profile.objects.get(id=user_id)
-            print("USER")
-            print(user)
         except Profile.DoesNotExist:
              raise NotFound('No existe usuario con ese id')
 
         try:#valores station, bike, status from SLOT
             slot_id = self.context['slot']
-            print("valor slot_id "+slot_id)
+            print("valor_slot id")
+            print(slot_id)
             slot=Slot.objects.get(id=slot_id)
-            print("SLOT")
             print(slot)
+            print(slot.bike.id)
+            print(slot.station)
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')
 
         rentBike= RentBike.objects.create(user = user,bike = slot.bike,from_station = slot.station, slot=slot , state = True)
 
-        refreshBike = Bike.objects.filter(id = str(slot.bike)).update( at_use = True , station = ' ', slot= ' ')
+        refreshBike = Bike.objects.filter(id = str(slot.bike.id)).update( at_use = True , station = ' ', slot= ' ')
 
         refreshSlot = Slot.objects.filter(id = slot_id).update(bike = '', status = 'Disponible')
         
         refreshUser = Profile.objects.filter(id=user_id).update(rentActive=True)
         return rentBike
-    
+
 class BikeRentUpdateSerializer(serializers.ModelSerializer):  
     class Meta:
         
@@ -110,28 +142,18 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self,validated_data):
-
-        print("+++++ UPDATE SERIALIZER +++++")
        
         try: #validamos contra base de datos.
             user_id = self.context['user']
             user = Profile.objects.get(id=user_id)
 
-            print("USER_ID >> "+ str(user_id))
         except Profile.DoesNotExist:
              raise NotFound('No existe usuario con ese id')
 
         try:#valores station, bike, status from SLOT
             slot_id = self.context['slot']
-            print("Slot_id >>"+slot_id)
 
             slot=Slot.objects.get(id=slot_id)
-            print("Valor SlotID>> "+str(slot.id))
-            print("Valor Station>> ")
-            print(slot.station)
-            print(str(slot.station))
-            print("Valor Slot-STATUS>> "+str(slot.status))
-            print("Valor Slot >>"+ str(slot))
             
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')
@@ -143,18 +165,10 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
             if rent is None:
                 return False
             aux = rent[0].bike_id
-            print("Valor Rent>> ")
-            print(rent)          
-            print("Valor Rent-UserID>> "+ str(rent[0].user_id))
-            print("Valor Rent-State>> "+ str(rent[0].state))
-            print("Valor rent-BikeID>> "+ str(rent[0].bike_id))
-            print("Valor rent-Station>> "+ str(rent[0].to_station))
 
             refreshBike = Bike.objects.filter(id = str(rent[0].bike_id)).update( at_use = False , station = str(slot.station), slot= slot_id)
             refreshRent = RentBike.objects.filter(id = str(rent[0].id)).update( state = False , to_station = slot.station, slot=slot.id, date_finish=timezone.now())
             
-            print("Valor rent-BikeID DESPUES>> "+ str(aux))
-            print("Valor slot-ID DESPUES>> "+ str(slot_id))
             refreshSlot = Slot.objects.filter(id = slot_id).update(bike = aux, status = 'No Disponible')   
 
         except Slot.DoesNotExist:
