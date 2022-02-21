@@ -12,7 +12,7 @@ export default function AdminPanel(){
 
 return(
     <>
-    <div className="title bg-dark mt-1"><h2>PANEL ADMIN</h2></div>
+    <div className="title bg-success mt-1"><h2>PANEL ADMIN</h2></div>
     <div className="panel mt-5 mb-5">
     
     <div className="container">

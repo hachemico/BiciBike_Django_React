@@ -4,18 +4,20 @@ import './header.css'
 import { Navbar, Nav, Container , NavLink} from 'react-bootstrap';
 import useUser from '../../hooks/useUser';
 import UserContext from '../../context/UserContext'
-import SlotImg from '../../assets/SLOT.png'
-
+import SlotImg from '../../assets/LOGO.png'
+import { useNavigate } from 'react-router-dom';
 
 export default function Header(){
 
     const{isLogged, logout ,isAdmin} = useUser()
     const{admin,setAdmin,jwt} = useContext(UserContext)
-
+    let navigate = useNavigate();
+    
     const handleClick = e => {
         e.preventDefault()
         console.log("Pulsamos LOGOUT")
         logout()
+        navigate('/'); // enviamos el usuario a home.
       }
 
     useEffect(function(){
@@ -33,7 +35,7 @@ export default function Header(){
         if(isLogged === true){ //depende de si esta logueado muestra una menu u otro.
             return ( 
                 <div className='row'>
-                    <Navbar expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='success'>
                         <Container>
                             <Link to ='/'>
                                 <Navbar.Brand>
@@ -61,7 +63,7 @@ export default function Header(){
         }else{
             return (
                 <div className='row'>
-                    <Navbar expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='success' >
                         <Container>
                             <Link to ='/'>
                                     <Navbar.Brand>
@@ -96,7 +98,7 @@ export default function Header(){
         console.log("RenderAdminLogged")
         return ( 
                 <div className='row'>
-                    <Navbar expand='sm' bg='dark' variant='dark'>
+                    <Navbar expand='sm' bg='success'>
                         <Container>
                             <Link to ='/'>
                                 <Navbar.Brand>
