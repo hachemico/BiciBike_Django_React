@@ -69,6 +69,22 @@ class BikeCreateSerializer(serializers.ModelSerializer):
         return valueBike
 
 
+class BikeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = Bike
+            fields = [
+                'serialNumber',
+                'station',
+                'available',
+                'at_use',
+                'slot'
+            ]
+
+    def update(self, validated_data):
+
+        print("UPDATE SERIALIZERUPDATE")
+
+
 
 class BikeSlotSerializer(serializers.ModelSerializer):
    
@@ -109,12 +125,9 @@ class BikeRentSerializer(serializers.ModelSerializer):
 
         try:#valores station, bike, status from SLOT
             slot_id = self.context['slot']
-            print("valor_slot id")
-            print(slot_id)
+           
             slot=Slot.objects.get(id=slot_id)
-            print(slot)
-            print(slot.bike.id)
-            print(slot.station)
+           
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')
 

@@ -1,5 +1,6 @@
 # from rest_framework import generics, mixins, status, viewsets
 import json
+from pymysql import NULL
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,6 +13,7 @@ from .serializers import (  BikeSerializer,
                             BikeRentUpdateSerializer,
                             BikeCreateSerializer,
                             BikeSlotSerializer,
+                            BikeUpdateSerializer,
                             )
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
@@ -96,6 +98,78 @@ class BikeCreateAPIView(APIView):
 
         return Response(serializer_bike.data, status=status.HTTP_201_CREATED)
 
+    def delete(self,request):
+
+        permission_classes = (IsAuthenticated,IsStaff)
+        serializer_class = BikeCreateSerializer
+
+        print("DELETE BIKE!!!")
+        try:
+            bike_instance=Bike.objects.get(id = request.data['bike']['serialNumber'])
+
+        except Bike.DoesNotExist:
+            return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        try:
+            slot_instance=Slot.objects.get(id= bike_instance.slot)
+        except Slot.DoesNotExist:
+            return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        updateSlot = Slot.objects.filter(name = bike_instance.slot).update(status = "Disponible")  
+        print("VALUE BIKE_INSTANCE")
+        print(bike_instance)
+        bike_instance.delete()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+class BikeUpdateAPIView(generics.UpdateAPIView):
+  
+    permission_classes = (IsAuthenticated,IsStaff,)
+    serializer_class = BikeUpdateSerializer
+    
+    def update(self, request):
+        
+        serializer_context = {
+            'serialNumber': request.data['bike']['serialNumber'],
+            'available': request.data['bike']['available'],
+            'slot': request.data['bike']['slot'],
+            'station': request.data['bike']['station'],
+            'at_use': request.data['bike']['at_use'],
+        }
+
+        try:
+            bike_instance=Bike.objects.get(id = request.data['bike']['serialNumber'])
+            
+        except Bike.DoesNotExist:
+            return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+
+        if request.data['bike']['slot'] == ' ': #Depende de si teniamos slot anteriormente o no.
+    
+            try:
+                slot_instance=Slot.objects.get(id= bike_instance.slot)
+            except Slot.DoesNotExist:
+                return Response('No existe una bici con ese Numero de Serie.', status=404)
+        else:
+           
+            try:
+                slot_instance=Slot.objects.get(id= request.data['bike']['slot'])
+            except Slot.DoesNotExist:
+                return Response('No existe una bici con ese Numero de Serie.', status=404)
+
+        if request.data['bike']['slot'] == ' ' :
+        
+            updateSlot = Slot.objects.filter(id = bike_instance.slot).update(bike = '')  
+
+        else:
+            updateSlot = Slot.objects.filter(name = bike_instance.slot).update(bike = bike_instance)  
+        updateBike = Bike.objects.filter(id = request.data['bike']['serialNumber']).update(available = request.data['bike']['available'],
+                                                                                            slot = request.data['bike']['slot'],
+                                                                                            station = request.data['bike']['station'],
+                                                                                            at_use=request.data['bike']['at_use'])       
+
+        return Response(updateBike, status=status.HTTP_201_CREATED)
+       
 
 class BikeFavoriteAPIView(APIView):
 
