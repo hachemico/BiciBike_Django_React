@@ -42,7 +42,7 @@ class BikeListAPIView(generics.ListAPIView):
     serializer_class = BikeListSerializer
 
     def list(self, request):
-        serializer_data = self.get_queryset()
+        serializer_data = self.get_queryset().order_by('station')
         serializer = self.serializer_class(serializer_data, many=True)
 
         print('*********** serializer.data ************')
