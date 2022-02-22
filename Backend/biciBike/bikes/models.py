@@ -1,3 +1,4 @@
+from turtle import title
 from django.db import models
 from django.utils import timezone
 
@@ -45,3 +46,21 @@ class RentBike(models.Model):
             )
             return str(data)
          # return str(self.user)
+
+class Incidence(models.Model):
+
+    user     = models.ForeignKey( 'profiles.Profile', related_name='incidence_user', on_delete=models.CASCADE, null=True)
+    bike        = models.ForeignKey('bikes.Bike',related_name ='incidence_bike', on_delete=models.CASCADE, null=True)
+    description = models.CharField(max_length=600,default='Incidencia Bici')
+    created_at  = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=200,null=True)
+    
+    def __str__(self):
+        data=(
+            self.user,
+            self.bike,
+            self.description,
+            self.created_at,
+            self.status
+        )
+        return str(data)

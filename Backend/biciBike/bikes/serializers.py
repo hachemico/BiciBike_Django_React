@@ -5,11 +5,11 @@ from rest_framework import serializers
 from biciBike.stations.serializers import SlotSerializer
 
 
-from .models import Bike, RentBike
+from .models import Bike, Incidence, RentBike
 from rest_framework.exceptions import NotFound
 from biciBike.profiles.models import Profile
 from biciBike.stations.models import Slot, Station
-from biciBike.bikes.models import Bike, RentBike
+# from biciBike.bikes.models import Bike, RentBike,Incidence
 
 from biciBike.stations.serializers import StationSerializer
 
@@ -188,3 +188,36 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
              raise NotFound('No existe slot con ese id')
 
         return refreshSlot
+
+class IncidenceSerializer(serializers.ModelSerializer):  
+    class Meta:
+        
+        model = Incidence
+        fields = [
+            'user',
+            'bike',
+            'description',
+            'created_at',
+            'status',
+            
+        ]
+
+    def create(self, validated_data):
+        
+        try: #validamos contra base de datos.
+            user = Profile.objects.get(id=self.context['user'])
+            print(user)
+        except Profile.DoesNotExist:
+             raise NotFound('No existe usuario con ese id')
+        
+        try: #validamos contra base de datos.
+         
+            bike = Bike.objects.get(id=self.context['bike'])
+
+        except Bike.DoesNotExist:
+             raise NotFound('No existe bici con ese id')
+
+        incidence= Incidence.objects.create(user = user,bike = bike, description = self.context['description'], status = "Pendiente")
+      
+           
+        return incidence

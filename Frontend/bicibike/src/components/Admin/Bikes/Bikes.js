@@ -34,13 +34,10 @@ export default function Bike({bike}){
   
 
     const toDelete = (bikeValue) =>{
-        console.log("click delete")
-        console.log(bikeValue.bikeValue)
+     
         let param = bikeValue.bikeValue
-        // let param={"bike":{"serialNumber":bikeValue.bikeValue.serialNumber}}
         console.log(param)
         deleteBike(param)
-
     }
 
 

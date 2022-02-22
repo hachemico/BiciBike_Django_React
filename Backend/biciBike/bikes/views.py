@@ -14,12 +14,13 @@ from .serializers import (  BikeSerializer,
                             BikeCreateSerializer,
                             BikeSlotSerializer,
                             BikeUpdateSerializer,
+                            IncidenceSerializer,
                             )
 
 # from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from biciBike.core.permissions import IsStaff
-from .models import Bike
+from .models import Bike,Incidence
 from biciBike.stations.models import Slot, Station
 
 #Admin
@@ -45,8 +46,6 @@ class BikeListAPIView(generics.ListAPIView):
         serializer_data = self.get_queryset().order_by('station')
         serializer = self.serializer_class(serializer_data, many=True)
 
-        print('*********** serializer.data ************')
-        print(serializer.data)
         return Response({
             'bikes': serializer.data
         }, status=status.HTTP_200_OK)
@@ -67,8 +66,7 @@ class BikeRetrieveAPIView(generics.RetrieveAPIView):
         serializer = self.serializer_class(bike, context={
             'request': request
         })
-        print('*********** serializer.data ************') 
-        print(serializer.data)
+       
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -106,8 +104,6 @@ class BikeDeleteAPIView(generics.DestroyAPIView):
 
     def delete(self,request, bike):
        
-        print("DELETE BIKE!!!")
-        print(bike)
         try:
             bike_instance=Bike.objects.get(serialNumber = bike)
 
@@ -122,8 +118,6 @@ class BikeDeleteAPIView(generics.DestroyAPIView):
 
             updateSlot = Slot.objects.filter(name = bike_instance.slot).update(status = "Disponible")  
         
-        print("VALUE BIKE_INSTANCE")
-        print(bike_instance)
         bike_instance.delete()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -317,7 +311,6 @@ class BikeRentUpdateAPIView(generics.ListCreateAPIView):
         data=serializer_data, context=serializer_context
         
         )
-
         serializer.is_valid(raise_exception=True)
         
         serializer.save()
@@ -325,3 +318,47 @@ class BikeRentUpdateAPIView(generics.ListCreateAPIView):
         print(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return "hola"
+
+
+class IncidenceCreateAPIView(generics.ListCreateAPIView):
+
+   
+    permission_classes = (IsAuthenticated,)
+    serializer_class = IncidenceSerializer
+    queryset = Incidence.objects.filter(status="Pendiente")
+    
+    def create(self,request):
+
+        print("entra CREATE INCIDENCES")
+        print("VALOR IDUSUARIO")
+        print(request.user.profile.id)
+        print(request.data)
+
+        serializer_context = {
+            'user': request.user.profile.id,
+            'bike': request.data['incidence']['bike'],
+            'description': request.data['incidence']['description'],
+            'request': request
+        }
+
+        serializer_data = request.data.get('incidence', {})
+        
+        serializer_incidence = self.serializer_class( data=serializer_data, context=serializer_context)
+        
+        print("DEBUGGGGGG")
+        serializer_incidence.is_valid(raise_exception=True)
+        
+        serializer_incidence.save()
+        print("serializer_data")
+        print(serializer_incidence.data)
+        return Response(serializer_incidence.data, status=status.HTTP_201_CREATED)
+    
+
+    def list(self, request):
+
+        serializer_data = self.get_queryset()
+        serializer = self.serializer_class(serializer_data, many=True)
+
+        return Response({
+            'incidences': serializer.data
+        }, status=status.HTTP_200_OK)
