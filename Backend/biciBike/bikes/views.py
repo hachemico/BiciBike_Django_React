@@ -98,29 +98,36 @@ class BikeCreateAPIView(APIView):
 
         return Response(serializer_bike.data, status=status.HTTP_201_CREATED)
 
-    def delete(self,request):
+    
+class BikeDeleteAPIView(generics.DestroyAPIView):
 
-        permission_classes = (IsAuthenticated,IsStaff)
-        serializer_class = BikeCreateSerializer
+    permission_classes = (IsAuthenticated,IsStaff)
+    serializer_class = BikeCreateSerializer
 
+    def delete(self,request, bike):
+       
         print("DELETE BIKE!!!")
+        print(bike)
         try:
-            bike_instance=Bike.objects.get(id = request.data['bike']['serialNumber'])
+            bike_instance=Bike.objects.get(serialNumber = bike)
 
         except Bike.DoesNotExist:
             return Response('No existe una bici con ese Numero de Serie.', status=404)
+        
+        if bike_instance.slot != '':
+            try:
+                slot_instance=Slot.objects.get(id= bike_instance.slot)
+            except Slot.DoesNotExist:
+                return Response('No existe una bici con ese Numero de Serie.', status=404)
 
-        try:
-            slot_instance=Slot.objects.get(id= bike_instance.slot)
-        except Slot.DoesNotExist:
-            return Response('No existe una bici con ese Numero de Serie.', status=404)
-
-        updateSlot = Slot.objects.filter(name = bike_instance.slot).update(status = "Disponible")  
+            updateSlot = Slot.objects.filter(name = bike_instance.slot).update(status = "Disponible")  
+        
         print("VALUE BIKE_INSTANCE")
         print(bike_instance)
         bike_instance.delete()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 
 class BikeUpdateAPIView(generics.UpdateAPIView):
   

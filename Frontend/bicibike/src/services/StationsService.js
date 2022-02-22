@@ -19,6 +19,16 @@ const StationsService = {
 
           return ApiService().get(`stations/${id}/slotsId`);
       },
+    
+    update_Slot({slot}) { //cambiar el estado de available.
+        console.log("entre get BikeService AVAILABLE")
+        console.log(slot)
+       
+        let params = {"slot":{"bike":slot.serialNumber,
+                            "slot":slot.slot,
+                    }}            
+        return ApiService().put(`stations/SlotUpdate/`, params);
+    },
   
     //   add(params) {
     

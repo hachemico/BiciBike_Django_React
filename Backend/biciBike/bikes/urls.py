@@ -11,6 +11,7 @@ from .views import (
     BikeAvailableUpdateAPIView,
     BikeCreateAPIView,
     BikeUpdateAPIView,
+    BikeDeleteAPIView,
 )
 
 app_name = 'bikes'
@@ -23,7 +24,8 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^bikes/?$', BikeListAPIView.as_view()), 
     url(r'^bikes/create/?$', BikeCreateAPIView.as_view()), 
-     url(r'^bikes/update/?$', BikeUpdateAPIView.as_view()), 
+    url(r'^bikes/update/?$', BikeUpdateAPIView.as_view()), 
+    url(r'^bikes/delete/(?P<bike>[-\w]+)/?$',BikeDeleteAPIView.as_view()), 
     url(r'^bikes/rent/?$',BikeRentAPIView.as_view()),
     url(r'^bikes/rentUpdate/?$',BikeRentUpdateAPIView.as_view()),
     url(r'^bikes/availableUpdate/?$',BikeAvailableUpdateAPIView.as_view()),

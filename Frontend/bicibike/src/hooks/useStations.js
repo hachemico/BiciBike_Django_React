@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react'
+import {useContext, useEffect, useState,useCallback} from 'react'
 import  StationsContext  from '../context/StationsContext';
 import StationsService from '../services/StationsService'
 
@@ -24,11 +24,23 @@ export function useStations(){
     }) 
     },[setLoading,setStations,rent]); //end_useEffect
 
-
+  //   const updateSlot = useCallback((param) => { // cambiar estado available
+    
+  //     StationsService.update_Slot(param)
+      
+  //     .then((data) =>{
+  //         console.log(data)
+        
+  //     })
+  //     .catch(err => {
+  //       console.error(err)
+  //     })
+  // }, [])
 
       return {
         loading: loading,
         stations: stations,
+        // updateSlot
         // error: error
         };
 }

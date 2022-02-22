@@ -25,22 +25,22 @@ export default() => {
     return Promise.reject(error);
   });
 
-//   axiosInstance.interceptors.response.use(
-//     (response) => response,
-//     (error) => {
-//       console.log("VALOR ERROR RECIBIDO");
-//       console.log(error);
-//       console.log(error.message);
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      console.log("VALOR ERROR RECIBIDO");
+      console.log(error);
+      console.log(error.message);
       
-//       if (error.response.status === 401) {
-//         localStorage.removeItem('token')
-//         localStorage.removeItem('user')
-//         // location.reload()
+      if (error.response.status === 401) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        // location.reload()
       
-//       }
-//       return Promise.reject(error) 
-//     }
-//   )
+      }
+      return Promise.reject(error) 
+    }
+  )
 
   return axiosInstance
 }

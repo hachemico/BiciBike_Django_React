@@ -6,10 +6,11 @@ export function BikeContextProvider ({children}) {
 
   const [bikes, setBikes] = useState([])
   const [available, setAvailable] = useState([])
+  const [toUpdateBike, setToUpdateBike] = useState([])
   console.log("Bikes-Context")
   console.log(bikes)
 
-  return <Context.Provider value = {{bikes, setBikes,available,setAvailable}}>
+  return <Context.Provider value = {{bikes, setBikes,available,setAvailable,toUpdateBike,setToUpdateBike}}>
     {children}
   </Context.Provider>
 }
