@@ -32,7 +32,7 @@ export default function Header(){
         if(isLogged === true){ //depende de si esta logueado muestra una menu u otro.
             return ( 
                 <div className='row'>
-                    <Navbar expand='sm' bg='success'>
+                    <Navbar expand='sm' bg='dark'>
                         <Container>
                             <Link to ='/'>
                                 <Navbar.Brand>
@@ -60,7 +60,7 @@ export default function Header(){
         }else{
             return (
                 <div className='row'>
-                    <Navbar expand='sm' bg='success' >
+                    <Navbar expand='sm' bg='dark' >
                         <Container>
                             <Link to ='/'>
                                     <Navbar.Brand>
@@ -95,7 +95,7 @@ export default function Header(){
         console.log("RenderAdminLogged")
         return ( 
                 <div className='row'>
-                    <Navbar expand='sm' bg='success'>
+                    <Navbar expand='sm' bg='dark'>
                         <Container>
                             <Link to ='/'>
                                 <Navbar.Brand>

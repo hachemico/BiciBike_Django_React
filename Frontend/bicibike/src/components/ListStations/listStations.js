@@ -7,7 +7,7 @@ export default function StationsList({stations}){
     console.log(stations)
 
     return <div className='ListStations'>
-                <div className="title bg-success mt-1"><h2>ESTACIONES</h2></div>
+                <div className="title bg-dark mt-1"><h2>ESTACIONES</h2></div>
                 <div className="container">
                 {
                     stations.map(({name,latitude,longitude,slot_number})=>

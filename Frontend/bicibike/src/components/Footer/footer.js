@@ -9,7 +9,7 @@ export default function Footer(){
     return (
       <>
 
-    <footer className="page-footer bg-success font-small blue pt-4 fixed mt-3">
+    <footer className="page-footer bg-dark font-small blue pt-4 fixed mt-3">
     <div className="container-fluid text-center text-md-left">
         <div className="row">
             <div className="col-md-6 mt-md-0 mt-3">
