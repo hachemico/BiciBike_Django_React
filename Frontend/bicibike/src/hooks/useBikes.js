@@ -1,9 +1,6 @@
 import { useState,useContext,useEffect ,useCallback} from "react"
-// import { bikes } from "../pages";
 import BikesService from "../services/BikeService";
 import BikesContext from "../context/BikeContext"
-// import { set } from "react-hook-form";
-// import { useStations } from "./useStations";
 import StationsService from "../services/StationsService";
 
 
@@ -18,9 +15,10 @@ export function useBikes(){
             setLoading(false)
             setBikes(bikes.data.bikes)
       }) 
-      },[setLoading,available,setAvailable,toUpdateBike]); 
-
-
+    //   },[setLoading,available,setAvailable,toUpdateBike]); 
+    },[available,setAvailable,toUpdateBike]);
+     
+      
     const changeAvailable = useCallback(({bikeValue}) => { // cambiar estado available
     
         BikesService.available(bikeValue)
@@ -31,7 +29,7 @@ export function useBikes(){
         })
     }, [setAvailable])
 
-    const createBike = useCallback((param) => { // cambiar estado available
+    const createBike = useCallback((param) => { 
     
         BikesService.create(param)
         
@@ -45,7 +43,7 @@ export function useBikes(){
         })
     }, [])
 
-    const updateBike = useCallback((param) => { // cambiar estado available
+    const updateBike = useCallback((param) => {
     
         BikesService.update(param)
         .then((data) =>{
@@ -57,17 +55,21 @@ export function useBikes(){
         })
     }, [setToUpdateBike])
 
-    const deleteBike = useCallback((param) => { // cambiar estado available
+    const deleteBike = useCallback((param) => {
     
         BikesService.delete(param)
         .then((data) =>{
-            setToUpdateBike()
+            setToUpdateBike(data)
             console.log(data)
         })
         .catch(err => {
           console.error(err)
         })
     }, [setToUpdateBike])
+
+
+
+
 
     return{
         loading: loading,

@@ -194,6 +194,7 @@ class IncidenceSerializer(serializers.ModelSerializer):
         
         model = Incidence
         fields = [
+            'id',
             'user',
             'bike',
             'description',

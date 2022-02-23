@@ -10,6 +10,9 @@ import { useForm } from "react-hook-form";
 export default function Bikes(){
 
     const {createBike} = useBikes()
+    const {bikes,setBikes}= useBikes();
+    console.log(bikes)
+    
     const [show, setShow] = useState(false);
 
     const[serialNumber,setSerialNumber] = useState("")
@@ -20,15 +23,14 @@ export default function Bikes(){
 
     const { handleSubmit} = useForm();
 
-    const {bikes,setBikes}= useBikes();
-    console.log(bikes)
    
 
     const handleClose = () => { console.log("HandleClose")
         setShow(false)
-        console.log("entra HandleClose")
     }
-
+    const handleShow = () => {console.log("HandleShow")
+        setShow(true)
+    }
     const createSubmit =(event)=>{
        
         let valueAvailable = ''
@@ -44,14 +46,9 @@ export default function Bikes(){
                     }}
         createBike(param)
         setShow(false)
-
     }
 
-    const handleShow = () => {console.log("HandleShow")
-        setShow(true)
-        console.log("entra handleShow")
     
-    }
 
     let buttonCreate = (<button type="button" class="btn btn-info mt-3 mb-3" onClick={() => handleShow()}>Crear Bike</button>)
     
@@ -63,34 +60,32 @@ export default function Bikes(){
             <Modal.Header closeButton>
                 <Modal.Title>BiciBike | Añadir Bici</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-
-            <Form onSubmit={handleSubmit(createSubmit)}>
-                <Form.Group className="mb-3" controlId="formSerialNumber">
-                    <Form.Label>Numero Serie</Form.Label>
-                    <Form.Control type="string" placeholder="Numero Serie" onChange={(e) => setSerialNumber(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group className="mb-3" controlId="formStation">
-                    <Form.Label>Estacion</Form.Label>
-                    <Form.Control type="string" placeholder="Estacion" onChange={(e) => setStation(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formSlot">
-                    <Form.Label>Slot</Form.Label>
-                    <Form.Control type="string" placeholder="Slot" onChange={(e) => setSlot(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formAvailable">
-                    <Form.Check type="checkbox" label="Disponible" onChange={(e) => setAvailable(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formAtUse">
-                    <Form.Check type="checkbox" label="En Uso" onChange={(e) => setAtUse(e.target.value)}/>
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
-            </Modal.Body>
-      </Modal>   
+                <Modal.Body>
+                    <Form onSubmit={handleSubmit(createSubmit)}>
+                        <Form.Group className="mb-3" controlId="formSerialNumber">
+                            <Form.Label>Numero Serie</Form.Label>
+                            <Form.Control type="string" placeholder="Numero Serie" onChange={(e) => setSerialNumber(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formStation">
+                            <Form.Label>Estacion</Form.Label>
+                            <Form.Control type="string" placeholder="Estacion" onChange={(e) => setStation(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formSlot">
+                            <Form.Label>Slot</Form.Label>
+                            <Form.Control type="string" placeholder="Slot" onChange={(e) => setSlot(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formAvailable">
+                            <Form.Check type="checkbox" label="Disponible" onChange={(e) => setAvailable(e.target.value)}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formAtUse">
+                            <Form.Check type="checkbox" label="En Uso" onChange={(e) => setAtUse(e.target.value)}/>
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>   
 
 
             <Table striped bordered hover>

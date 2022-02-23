@@ -19,7 +19,7 @@ return(
         <div className="row">
         <CardGroup>  
         <Card className="">
-            <Link to={`/`} className='Station-link text-dark text-decoration-none'>
+            <Link to={`/adminPanel/incidences`} className='Station-link text-dark text-decoration-none'>
                 <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
                 <Card.Body>
                 <Card.Title>INCIDENCIAS</Card.Title>

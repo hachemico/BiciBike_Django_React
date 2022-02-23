@@ -35,14 +35,14 @@ class RentBike(models.Model):
     state       = models.BooleanField(default=False,db_index=True)
     def __str__(self):
             data=(
-                self.user,
-                self.slot,
                 self.bike,
                 self.date_start,
                 self.date_finish,
                 self.from_station,
                 self.to_station,
-                self.state
+                self.slot,
+                self.state,
+                self.user
             )
             return str(data)
          # return str(self.user)
@@ -57,10 +57,11 @@ class Incidence(models.Model):
     
     def __str__(self):
         data=(
-            self.user,
             self.bike,
-            self.description,
             self.created_at,
-            self.status
+            self.description,
+            self.id,
+            self.status,
+            self.user
         )
         return str(data)

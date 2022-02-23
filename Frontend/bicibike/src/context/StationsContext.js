@@ -4,7 +4,6 @@ const Context = React.createContext({})
 
 export function StationsContextProvider ({children}) {
   const [stations, setStations] = useState([])
-  const [rent,setRent] = useState([])
   console.log("Station-Context")
   console.log(stations)
   return <Context.Provider value = {{stations, setStations}}>

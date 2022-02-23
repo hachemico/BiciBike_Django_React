@@ -5,7 +5,6 @@ from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound
-# from rest_framework.generics import (RetrieveAPIView , UpdateAPIView, RetrieveUpdateDestroyAPIView)
 from .serializers import (  BikeSerializer, 
                             BikeListSerializer,
                             BikeDetailSerializer,
@@ -17,7 +16,6 @@ from .serializers import (  BikeSerializer,
                             IncidenceSerializer,
                             )
 
-# from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from biciBike.core.permissions import IsStaff
 from .models import Bike,Incidence
@@ -178,16 +176,13 @@ class BikeFavoriteAPIView(APIView):
     serializer_class = BikeSerializer
 
     def post(self, request, serialNumber=None):
-        
-        print('*********** BikeFavouriteAPIView ************') 
 
         profile = self.request.user.profile
         serializer_context = {'request': request}
 
         try:
             bike = Bike.objects.get(serialNumber=serialNumber)
-            print("*******bike*********")
-            print(bike)
+          
         except Bike.DoesNotExist:
             return Response('No existe una bici con ese Numero de Serie.', status=404)
 
@@ -199,16 +194,13 @@ class BikeFavoriteAPIView(APIView):
 
         
     def delete(self, request, serialNumber=None):
-        
-        print('*********** Bike-UNfavouriteAPIView ************') 
+    
         profile = self.request.user.profile
         serializer_context = {'request': request}
 
         try:
             bike = Bike.objects.get(serialNumber=serialNumber)
-            print("*******bike*********")
-            print(bike)
-            # favs= 
+            
         except Bike.DoesNotExist:
            return Response('No existe una bici con ese Numero de Serie.', status=404)
 
@@ -226,9 +218,6 @@ class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
     serializer_class = BikeSerializer
         
     def update(self, request):
-    
-        print("ENTRA BIKE AVAILABLE")
-        print(request.data['bike']['at_use'])
 
         serializer_context = {
             'serialNumber': request.data['bike']['serialNumber'],
@@ -259,34 +248,24 @@ class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
 
 class BikeRentAPIView(generics.ListCreateAPIView):
 
-    # print("BIKE RENT APIVIEW")
-
     permission_classes = (IsAuthenticated,)
     serializer_class = BikeRentSerializer
     
     def create(self, request):
-        print("USER ID")
-        print(request.user.profile.id)
+     
         serializer_context = {
             'user': request.user.profile.id,
             'slot': request.data['rent']['slot'],
             'request': request
         }
-        print("BIKE RENT APIVIEW")
-        # serializer_data = request.data.station
-
+       
         serializer_data = request.data.get('rent', {})
 
-        serializer = self.serializer_class(
-        data=serializer_data, context=serializer_context
-        
-        )
+        serializer = self.serializer_class(data=serializer_data, context=serializer_context)
 
         serializer.is_valid(raise_exception=True)
-        
         serializer.save()
-        print("serializer_data")
-        print(serializer.data)
+       
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class BikeRentUpdateAPIView(generics.ListCreateAPIView):
@@ -296,10 +275,6 @@ class BikeRentUpdateAPIView(generics.ListCreateAPIView):
 
     def create(self,request):
 
-        print("dentro del update RENT")
-        print("VALOR IDUSUARIO")
-        print(request.user.profile.id)
-        print(request.data)
         serializer_context = {
             'user': request.user.profile.id,
             'slot': request.data['rent']['slot'],
@@ -307,32 +282,22 @@ class BikeRentUpdateAPIView(generics.ListCreateAPIView):
         }
         serializer_data = request.data.get('rent', {})
 
-        serializer = self.serializer_class(
-        data=serializer_data, context=serializer_context
-        
-        )
+        serializer = self.serializer_class(data=serializer_data, context=serializer_context)
         serializer.is_valid(raise_exception=True)
         
         serializer.save()
-        print("serializer_data")
-        print(serializer.data)
+       
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return "hola"
-
+       
+    
 
 class IncidenceCreateAPIView(generics.ListCreateAPIView):
 
-   
     permission_classes = (IsAuthenticated,)
     serializer_class = IncidenceSerializer
-    queryset = Incidence.objects.filter(status="Pendiente")
-    
+    queryset = Incidence.objects.all().order_by('status','created_at')
+   
     def create(self,request):
-
-        print("entra CREATE INCIDENCES")
-        print("VALOR IDUSUARIO")
-        print(request.user.profile.id)
-        print(request.data)
 
         serializer_context = {
             'user': request.user.profile.id,
@@ -340,17 +305,12 @@ class IncidenceCreateAPIView(generics.ListCreateAPIView):
             'description': request.data['incidence']['description'],
             'request': request
         }
-
         serializer_data = request.data.get('incidence', {})
-        
+
         serializer_incidence = self.serializer_class( data=serializer_data, context=serializer_context)
-        
-        print("DEBUGGGGGG")
         serializer_incidence.is_valid(raise_exception=True)
-        
         serializer_incidence.save()
-        print("serializer_data")
-        print(serializer_incidence.data)
+ 
         return Response(serializer_incidence.data, status=status.HTTP_201_CREATED)
     
 
@@ -362,3 +322,38 @@ class IncidenceCreateAPIView(generics.ListCreateAPIView):
         return Response({
             'incidences': serializer.data
         }, status=status.HTTP_200_OK)
+
+
+
+
+
+class IncidenceUpdateAPIView(generics.UpdateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = IncidenceSerializer
+    queryset= Incidence.objects.all()
+    
+    def update(self, request):
+    
+        print("ENTRA INCIDENCE UPDATE")
+        print(request.data['id'])
+
+        try: #validamos contra base de datos.
+            incidence_instance = Incidence.objects.get(id=request.data['id'])
+
+        except Bike.DoesNotExist:
+             raise NotFound('No existe usuario con ese id')
+
+        serializer_data = request.data
+        serializer_context = {'request': request}
+
+        serializer = self.serializer_class(
+            incidence_instance, 
+            context=serializer_context,
+            data=serializer_data, 
+            partial=True
+        )
+        
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)

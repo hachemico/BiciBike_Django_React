@@ -39,11 +39,10 @@ const BikesService = {
 
     delete(bike) { //cambiar el estado de available.
         
-        console.log("entre get BikeService DELETE")           
-        console.log(bike)
         let vike=bike.serialNumber
         return ApiService().delete(`bikes/delete/${vike}`);
     },
+
 
 }
 

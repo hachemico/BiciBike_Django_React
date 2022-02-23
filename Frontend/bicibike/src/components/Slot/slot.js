@@ -1,17 +1,25 @@
-import React,{useContext} from "react";
+import React,{useContext,useState} from "react";
 import './slot.css'
 import SlotImg from '../../assets/SLOT.png'
 import OutImg from '../../assets/OUTSERVICE.png'
 import Button from 'react-bootstrap/Button'
 import useUser from "../../hooks/useUser";
 import UserContext from "../../context/UserContext"
-
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
+import { useForm } from "react-hook-form";
+import { useIncidences } from "../../hooks/useIncidences";
 
 export default function Slot ({slot,index}) {
 
   const {check_auth,addFav,rentBike,backBike} = useUser()
   const {isRenting,setIsRenting} = useContext(UserContext)
 
+  const [show, setShow] = useState(false);
+  const [description,setDescription] = useState("")
+  const { handleSubmit} = useForm();
+
+  const {createIncidence}=useIncidences()
 
 
   const toRent = ({slot}) => {
@@ -26,7 +34,7 @@ export default function Slot ({slot,index}) {
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
   }
-  const backRent = ({slot}) => {
+  const backRent = ({slot}) => { //devolver alquiler
   
     if(check_auth() === true){ //comprovamos que hay token.
 
@@ -57,6 +65,37 @@ export default function Slot ({slot,index}) {
     }
 
   }
+
+  const toIncidence = (event) => {
+    console.log("click Incidencia!!");
+    console.log(event)
+
+    console.log(description)
+    console.log(slot.bike.serialNumber)
+    if(check_auth()=== true){ //comprovamos que hay token.
+
+      console.log("hay token")
+
+      let params={"incidence":
+              {
+                "bike":slot.bike.serialNumber,
+                "description":description
+              }}
+
+      createIncidence(params)
+      setShow(false)
+    }else{
+      console.log("no hay token")
+
+      //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+    }
+
+  }
+
+
+
+
+
     //RENDERIZA LOS BOTTONES DEPENDIENDO DE SI HAY ALQUILER O NO.
   let rentButton1 =
           slot.bike !== null
@@ -75,11 +114,13 @@ export default function Slot ({slot,index}) {
   let rentButton = ''
   let imageSrc = ''
   let favButton= ''
-  
+  let incidenceButton=''
+
   if(slot.bike !== null){ //condicional biciDisponible modif. src/image
       if(slot.bike.available === true){
         imageSrc= SlotImg
-        favButton=<Button variant="info" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+        favButton=<Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+        incidenceButton=<Button variant="secondary" onClick={() => handleShow()}>Notificar Indicencia</Button>
         isRenting? rentButton=rentButton2 : rentButton=rentButton1
 
       }else{
@@ -89,13 +130,33 @@ export default function Slot ({slot,index}) {
   }else{
     imageSrc = SlotImg
     favButton = slot.bike !== null
-              ? <Button variant="info" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+              ? <Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos</Button>
               : '';
-              
+
+    incidenceButton = slot.bike !== null
+              ? <Button variant="secondary" onClick={() => handleShow()}>Notificar Indicencia</Button>
+              : ''    
+
     isRenting? rentButton=rentButton2 : rentButton=rentButton1
   }
+
+  // incidenceButton=<Button variant="secondary" onClick={() => toFav({slot})}>Notificar Indicencia</Button>
   console.log("COMPONENT-SLOT -> Valor SLOT")
   console.log(slot)
+
+
+  const handleClose = () => { console.log("HandleClose")
+  setShow(false)
+  console.log("entra HandleClose")
+  }
+
+
+
+  const handleShow = () => {console.log("HandleShow")
+        setShow(true)
+        console.log("entra handleShow")
+    
+    }
 
   return (
       <>
@@ -114,8 +175,29 @@ export default function Slot ({slot,index}) {
             {rentButton}
             <br/>
             {favButton}
+            <br/>
+            {incidenceButton}
           </div>
         </div>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>BiciBike | Gestión Incidencias Bicicletas</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+
+            <Form onSubmit={handleSubmit(toIncidence)}>
+                <Form.Group className="mb-3" controlId="formDescription">
+                    <Form.Label>Añade tu Incidencia</Form.Label>
+                    <Form.Control as="textarea" rows="3" placeholder="Escribe aquí..." onChange={(e) => setDescription(e.target.value)}/>
+                </Form.Group>
+               
+                <Button variant="primary" type="submit">
+                    Enviar
+                </Button>
+            </Form>
+            </Modal.Body>
+      </Modal>   
+
       </>
     )
   }

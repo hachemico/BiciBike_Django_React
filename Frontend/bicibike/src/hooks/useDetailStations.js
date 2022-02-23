@@ -28,7 +28,7 @@ export function useSingleStations({params}){
             setLoading(false)
             setSingleStation(singleStation.data)    
         })  
-    },[setSingleStation,params,station,rent]); //end_useEffect
+    },[setLoading,setSingleStation,params,station,rent]); //end_useEffect
 
 
     return{
