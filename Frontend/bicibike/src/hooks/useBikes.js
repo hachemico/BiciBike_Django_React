@@ -15,7 +15,6 @@ export function useBikes(){
             setLoading(false)
             setBikes(bikes.data.bikes)
       }) 
-    //   },[setLoading,available,setAvailable,toUpdateBike]); 
     },[available,setAvailable,toUpdateBike]);
      
       
@@ -66,10 +65,6 @@ export function useBikes(){
           console.error(err)
         })
     }, [setToUpdateBike])
-
-
-
-
 
     return{
         loading: loading,

@@ -13,7 +13,6 @@ from .serializers import (  StationSerializer,
                             StationSlotSerializer,
                             SlotSerializer,)
 
-# from rest_framework.permissions import (AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser,)
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from .models import Station, Slot
 
@@ -47,7 +46,6 @@ class StationListAPIView(generics.ListAPIView):
         }, status=status.HTTP_200_OK)
         
 
-
 class StationRetrieveAPIView(generics.RetrieveAPIView):      ##Obtenemos los SLOTS de la Estación.    #COMPLETAR MAS ADELANTE!
   
     lookup_field = 'name'
@@ -63,8 +61,6 @@ class StationRetrieveAPIView(generics.RetrieveAPIView):      ##Obtenemos los SLO
        
         return queryset.filter(**filters)
     
-
-
 
 class StationSlotUpdateAPIView(generics.UpdateAPIView): #Actualizar el Slot al crear una BIKE
     

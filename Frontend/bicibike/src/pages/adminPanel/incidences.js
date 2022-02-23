@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useIncidences } from "../../hooks/useIncidences";
-import  IncidencesContex  from "../../context/IncidenceContext";
+import  IncidencesContex  from "../../context/IncidencesContext";
 import Table from 'react-bootstrap/Table'
 import Incidences from "../../components/Admin/Incidences/Incidences";
 
@@ -9,9 +9,7 @@ import Incidences from "../../components/Admin/Incidences/Incidences";
 export default function Incidence(){
 
     const {incidences} = useIncidences()
-
-    console.log(incidences)
-    console.log(incidences.incidences)
+    
 return(
 
     <>
@@ -19,7 +17,8 @@ return(
     <Table striped bordered hover>
         <thead>
             <tr>
-            <th>ID</th>
+            <th>ID Incidencia</th>
+            <th>ID Bici</th>
             <th>Usuario</th>
             <th>Descripcion</th>
             <th>Fecha</th>

@@ -318,7 +318,7 @@ class IncidenceCreateAPIView(generics.ListCreateAPIView):
 
         serializer_data = self.get_queryset()
         serializer = self.serializer_class(serializer_data, many=True)
-
+        print(serializer.data)
         return Response({
             'incidences': serializer.data
         }, status=status.HTTP_200_OK)
@@ -335,9 +335,6 @@ class IncidenceUpdateAPIView(generics.UpdateAPIView):
     
     def update(self, request):
     
-        print("ENTRA INCIDENCE UPDATE")
-        print(request.data['id'])
-
         try: #validamos contra base de datos.
             incidence_instance = Incidence.objects.get(id=request.data['id'])
 

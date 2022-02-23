@@ -10,12 +10,7 @@ import Spinner from "../../components/Spinner/spinner";
 export default function Station(){
     
     const params= useParams()
-    console.log(params)
-
     const {singleStation} = useSingleStations({params});
-
-   console.log(singleStation)
-
 
 const divStyle ={
     color:'black'

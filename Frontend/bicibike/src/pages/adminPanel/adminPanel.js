@@ -51,28 +51,6 @@ return(
             </Link>
         </Card>
         </CardGroup>
-
-        {/* <CardGroup>  
-        <Card>
-            <Card.Img variant="top" src={SlotImg} className=" card-img-top " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>INCIDENCIAS</Link></Card.Title>
-            </Card.Body>
-        </Card>
-        <Card>
-            <Card.Img variant="top" src={SlotImg} className=" card-img-top " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>GESTIONAR BIKE</Link></Card.Title>
-            </Card.Body>
-        </Card>
-        <Card>
-            <Card.Img variant="top" src={SlotImg} className=" card-img-top " alt="Imagen Estación Poliesportiu" />
-            <Card.Body>
-            <Card.Title><Link to={`/`} className='Station-link'>GESTIONAR BIKE</Link></Card.Title>
-            </Card.Body>
-        </Card>
-     
-        </CardGroup> */}
         </div>
     </div>
     </div>

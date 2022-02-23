@@ -1,7 +1,7 @@
 import React , {useContext,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import './header.css'
-import { Navbar, Nav, Container , NavLink} from 'react-bootstrap';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 import useUser from '../../hooks/useUser';
 import UserContext from '../../context/UserContext'
 import SlotImg from '../../assets/LOGO.png'
@@ -11,25 +11,22 @@ export default function Header(){
 
     const{isLogged, logout ,isAdmin} = useUser()
     const{admin,setAdmin,jwt} = useContext(UserContext)
+    
+
     let navigate = useNavigate();
     
     const handleClick = e => {
         e.preventDefault()
-        console.log("Pulsamos LOGOUT")
         logout()
         navigate('/'); // enviamos el usuario a home.
       }
 
     useEffect(function(){
-        console.log("USE-EFECT")
+
         if(isLogged) isAdmin()
 
     },[jwt]); //end_useEffect
 
-    console.log("ISADMIN "+admin)
-    console.log("ISLOGGED "+ isLogged)
-    
-    console.log("HEADER RENDERIZA!!")
 
     const renderLoginLogOut= (isLogged) => {
         if(isLogged === true){ //depende de si esta logueado muestra una menu u otro.

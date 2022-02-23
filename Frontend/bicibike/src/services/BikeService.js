@@ -3,12 +3,11 @@ import ApiService from './ApiService'
 const BikesService = {
 
     getAll() { //obtener todas las bikes.
-        console.log("entre get BikeService getAll")
+     
         return ApiService().get(`bikes/`);
     },
 
     available(bike) { //cambiar el estado de available.
-        console.log("entre get BikeService AVAILABLE")
        
         let value= ''
         bike.available === true? value= false: value=true //cambiamos el estado
@@ -21,28 +20,18 @@ const BikesService = {
         return ApiService().put(`bikes/availableUpdate/`, params);
     },
 
-
-    create(bike) { //cambiar el estado de available.
-        
-        console.log("entre get BikeService CREATE")    
-        
+    create(bike) { 
         return ApiService().post(`bikes/create/`, bike);
     },
 
-    update(bike) { //cambiar el estado de available.
-        
-        console.log("entre get BikeService UPDATE")    
-        
+    update(bike) {
         return ApiService().put(`bikes/update/`, bike);
     },
 
-
-    delete(bike) { //cambiar el estado de available.
-        
+    delete(bike) { 
         let vike=bike.serialNumber
         return ApiService().delete(`bikes/delete/${vike}`);
     },
-
 
 }
 

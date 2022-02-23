@@ -8,10 +8,9 @@ import CookieConsent from "react-cookie-consent";
 export default function Home() {
 
     const {stations} = useStations();
-    console.log(stations)
 
 return (
-//    <StationsList stations={stations}/>
+
 <div>
     <CookieConsent buttonText="Aceptar Todo"
                     cookieName="myAwesomeCookieName2"

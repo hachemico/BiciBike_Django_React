@@ -8,20 +8,14 @@ export default() => {
   const token = window.sessionStorage.getItem('token')
   if (token ) {
     axiosInstance.defaults.headers.common['Authorization'] = `Token ${token}`
-    // console.log("Token enviado");
-    // console.log(token);
-
   } 
 
   axios.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    console.log("AAAAAAA");
     return response;
+
   }, function (error) {
-    console.log("BBBBBBBB");
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+  
+    
     return Promise.reject(error);
   });
 
@@ -35,8 +29,6 @@ export default() => {
       if (error.response.status === 401) {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        // location.reload()
-      
       }
       return Promise.reject(error) 
     }

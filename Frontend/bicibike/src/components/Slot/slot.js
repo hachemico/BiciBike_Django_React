@@ -26,40 +26,30 @@ export default function Slot ({slot,index}) {
   
     if(check_auth() === true){ //comprovamos que hay token.
 
-      console.log("hay token")
-      console.log("valor SLOT>> "+slot.name)
       rentBike({slot})
     }else{
-      console.log("no hay token")
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
   }
   const backRent = ({slot}) => { //devolver alquiler
   
-    if(check_auth() === true){ //comprovamos que hay token.
+    if(check_auth() === true){ 
 
-      console.log("hay token")
-      console.log("valor SLOT>> "+slot.name)
       backBike({slot})
 
     }else{
-      console.log("no hay token")
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
   }
 
 
   const toFav = ({slot}) => {
-    console.log("click fav!!");
-    console.log(slot)
-    if(check_auth()=== true){ //comprovamos que hay token.
 
-      console.log("hay token")
+    if(check_auth()=== true){ 
 
       addFav({slot})
 
     }else{
-      console.log("no hay token")
 
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
@@ -67,33 +57,21 @@ export default function Slot ({slot,index}) {
   }
 
   const toIncidence = (event) => {
-    console.log("click Incidencia!!");
-    console.log(event)
 
-    console.log(description)
-    console.log(slot.bike.serialNumber)
     if(check_auth()=== true){ //comprovamos que hay token.
-
-      console.log("hay token")
 
       let params={"incidence":
               {
                 "bike":slot.bike.serialNumber,
                 "description":description
               }}
-
       createIncidence(params)
       setShow(false)
     }else{
-      console.log("no hay token")
-
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
 
   }
-
-
-
 
 
     //RENDERIZA LOS BOTTONES DEPENDIENDO DE SI HAY ALQUILER O NO.
@@ -140,23 +118,9 @@ export default function Slot ({slot,index}) {
     isRenting? rentButton=rentButton2 : rentButton=rentButton1
   }
 
-  // incidenceButton=<Button variant="secondary" onClick={() => toFav({slot})}>Notificar Indicencia</Button>
-  console.log("COMPONENT-SLOT -> Valor SLOT")
-  console.log(slot)
+  const handleClose = () => { setShow(false)}
 
-
-  const handleClose = () => { console.log("HandleClose")
-  setShow(false)
-  console.log("entra HandleClose")
-  }
-
-
-
-  const handleShow = () => {console.log("HandleShow")
-        setShow(true)
-        console.log("entra handleShow")
-    
-    }
+  const handleShow = () => { setShow(true)}
 
   return (
       <>

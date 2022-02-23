@@ -26,7 +26,7 @@ export default function Bike({bike}){
     bike.available === true ? valueAvailable = "En Servicio": valueAvailable="Fuera Servicio"
     bike.at_use === true ? valueAt_use = "En Uso": valueAt_use="Estacionada"
     bikeValue = bike
-    console.log(bikeValue)
+    
     const toAvailable = () =>{
 
         changeAvailable({bikeValue})
@@ -40,8 +40,6 @@ export default function Bike({bike}){
         deleteBike(param)
     }
 
-
-
     let buttonAvailable = bike.available === true
                             ? <Button variant="success" onClick={() => toAvailable({bikeValue})}>Estado</Button>
                             : <Button variant="warning" onClick={() => toAvailable({bikeValue})}>Estado</Button>
@@ -52,34 +50,24 @@ export default function Bike({bike}){
 
     const handleClose = () => { console.log("HandleClose")
         setShow(false)
-        console.log("entra HandleClose")
     }
 
     const updateSubmit =(event)=>{
-        // event.preventDefault()
-        console.log("entra HandleSubmit")
-        console.log(event)
-        console.log(serialNumber)
-        console.log(slot)
-        console.log(station)
-        console.log(available)
-        console.log(atUse)
+    
         let valueAvailable=''
         let valueAtUse=''
 
-       if( available=== true || available === "true"){
-        valueAvailable = "True"
-        console.log("AAAA")
-       }else{
-        valueAvailable = "False"
-        console.log("BBBBB")
-       }
+        if( available=== true || available === "true"){
+                valueAvailable = "True"
+        }else{
+                valueAvailable = "False"
+        }
 
-       if(atUse===true || atUse === "true"){
-            valueAtUse= "True"
-       }else{
-        valueAtUse = "False"
-       }
+        if(atUse===true || atUse === "true"){
+                valueAtUse= "True"
+        }else{
+                valueAtUse = "False"
+        }
        
         let param = {"bike":{"serialNumber":serialNumber,
                             "slot":slot,
@@ -87,24 +75,18 @@ export default function Bike({bike}){
                             "available":valueAvailable,
                             "at_use":valueAtUse
                     }}
-        console.log(param)
         updateBike(param)
         setShow(false)
 
     }
-    const handleShow = (bikeValue) => {
-        console.log("HandleShow")
-        console.log("valor BikeValue")
-        console.log(bikeValue)
+    const handleShow = (bikeValue) => {     //guardamos el valor en el state para poder aplicarlo en el update.
+        
         setSerialNumber(bikeValue.serialNumber)
         setSlot(bikeValue.slot)
         setStation(bikeValue.station)
         setAtUse(bikeValue.at_use)
         setAvailable(bikeValue.available)
         setShow(true)
-
-        console.log("entra handleShow")
-    
     }
 
     return(
@@ -122,9 +104,6 @@ export default function Bike({bike}){
                     {buttonUpdate}
                     {buttonDelete}
                 </div>
-            </td>
-            <td>
-                {/* {ModalUpdate} */}
             </td>
         </tr>
         <Modal show={show} onHide={handleClose}>
@@ -149,7 +128,7 @@ export default function Bike({bike}){
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formAvailable">
                    
-                {/* < Form.Check type="checkbox" checked={available} label="Disponible"  onChange={(e) => setAvailable(e.target.value)}/> */}
+               
                 <label>
                 <div> Disponible:</div>
                
@@ -160,7 +139,6 @@ export default function Bike({bike}){
                 </label>    
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formAtUse">
-                    {/* <Form.Check type="checkbox" checked={atUse} label="En Uso" onChange={(e) => setAtUse(e.target.value)}/> */}
                     <label>
                     <div>En uso:</div>
                     <select value={atUse} onChange={(e) => setAtUse(e.target.value)}>

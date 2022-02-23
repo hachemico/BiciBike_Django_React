@@ -2,7 +2,6 @@ import { useState,useContext,useCallback } from "react";
 import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
 import UserContext from "../context/UserContext";
-// import  StationsContext  from '../context/StationsContext';
 
 import  RentContext from '../context/RentContext'
 import { useNavigate } from 'react-router-dom';
@@ -38,14 +37,12 @@ const loginForm = useCallback(({email, password}) => {
   }, [setJWT,setState])
 // }, [])
 
-const registerForm = useCallback(
-    ({email, password, username}) => {
-    console.log("entra hook-useUser --> Register")
- 
+const registerForm = useCallback(({email, password, username}) => {
+  
     setState({ loading: true, error: false,loadingUser: false });
     RegisterService.postRegister( username, email, password )
         .then((data) => {
-          console.log(data.data.user.token);
+          
           if (data.data.user.token){
             setState({loading: false, error: false })
             navigate('/'); // enviamos el usuario a home, aunque podría ir a Login.
@@ -67,7 +64,7 @@ const registerForm = useCallback(
 
 
   const logout = useCallback(() => {
-    console.log("entra hook-useUser --> logout")
+    
     window.sessionStorage.removeItem('token')
     setJWT(null)
     setAdmin(null)
@@ -83,20 +80,16 @@ const registerForm = useCallback(
   }
 
   const isAdmin = useCallback(()=>{
-    console.log("entra hook-user --> ")
+    
     UserService.isAdmin()
     .then((data)=>{
-          console.log(data)
-          console.log(data.data.user.is_staff)
-
+          
           if(data.data.user.is_staff===true){
             setAdmin(true)
             setUser(data.data.user)
           }else{
             setAdmin(null)
           }
-          //COMPROVAR QUE EL data.is_staff == true para set ADMIN
-
     })
     .catch((err) => {
       console.log(err);
@@ -107,15 +100,10 @@ const registerForm = useCallback(
 
 
   const rentBike = useCallback(({slot}) => {
-    console.log("entra hook-useUser --> rentBike")
-    console.log(slot)
-    RentService.postRent(slot.name)
-    // .then(setRent)
-    .then(data=>{
-      console.log("VALOR RENT>> "+data)
-      console.log(data.data.from_station)
-      setRent(data)
 
+    RentService.postRent(slot.name)
+    .then(data=>{
+      setRent(data)
       window.sessionStorage.setItem('isRenting', true)
       setIsRenting(true)
     })
@@ -126,13 +114,10 @@ const registerForm = useCallback(
 }, [setIsRenting,setRent])
 
 const backBike = useCallback(({slot}) => {
-  console.log("entra hook-useUser --> rentBike")
-  console.log(slot)
+
   RentService.postUpdateRent(slot.name)
-  // .then(setRent)
   .then(data=>{
-    console.log("VALOR RENT>> "+data)
-    console.log(data.data.from_station)
+
     setRent(data)
     window.sessionStorage.removeItem('isRenting')
     setIsRenting(null)
@@ -145,7 +130,6 @@ const backBike = useCallback(({slot}) => {
 
 
 const addFav = useCallback(({slot}) => {
-  console.log("Entra addFAv - USERHOOK")
 
   UserService.postAddFav(slot.id_bike)
     .then(setFavs)
@@ -157,29 +141,21 @@ const addFav = useCallback(({slot}) => {
 
 
 const unFav = useCallback(({slot}) => {
-  console.log("Entra delFAv - USERHOOK")
-
-  console.log(slot.id_bike)
-
+ 
   UserService.DeleteFav(slot.id_bike)
     .then((data) => {
-
-    console.log(data)
-      // setFavs()
+      console.log(data)
      })
    
     .catch(err => {
       console.error(err)
     })
-// }, [jwt, setFavs]) 
 }, []) 
 
 
   return {
     isLogged: Boolean(jwt),
     isRenting: Boolean(isRenting),
-    // isLoginLoading: state.loading,
-    // hasLoginError: state.error,
     check_auth,
     registerForm,
     loginForm,

@@ -2,28 +2,20 @@ import ApiService from "./ApiService";
 
 const IncidencesService={
 
-    create_incidence(params) { //cambiar el estado de available.
+    create_incidence(params) { 
         
         return ApiService().post(`bikes/incidenceCreate/`,params);
     },
-
-// EDITANDOOOOOO **********************************************************************
     
-    update_incidence(params) { //cambiar el estado de available.
-            console.log(params)
+    update_incidence(params) { 
             
         return ApiService().put(`bikes/incidenceUpdate/`,params);
     },
 
-//EDITANDOOOOOOOO ************************************************************************
-
-    getIncidences() { //cambiar el estado de available.
-        console.log("ENTRA GET INCIDENCES")
+    getIncidences() { 
+        
         return ApiService().get(`bikes/incidenceCreate/`);
     },
-
-
-
 
 }
 export default IncidencesService;

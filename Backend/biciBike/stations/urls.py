@@ -18,11 +18,7 @@ router.register(r'stations_Admin', StationViewSetAdmin)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    # url(r'^stations/slotUpdate/?$',StationSlotUpdateAPIView.as_view()),
     url(r'^stations/SlotUpdate/?$',StationSlotUpdateAPIView.as_view()),
     url(r'^stations/?$', StationListAPIView.as_view()), 
-    url(r'^stations/(?P<name>\w+)/slots/?$', StationRetrieveAPIView.as_view()),
-   
-    # url(r'^stations/(?P<name>\w+)/slotsId/?$', StationIDRetrieveAPIView.as_view()),
-    # url(r'^stations/(?P<name>\w+)/?$', StationRetrieveAPIView.as_view()),  
+    url(r'^stations/(?P<name>\w+)/slots/?$', StationRetrieveAPIView.as_view()), 
 ]

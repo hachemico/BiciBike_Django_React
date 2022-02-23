@@ -14,28 +14,10 @@ export function useStations(){
       setLoading(true)
       StationsService.get()
       .then((stations) => {
-          console.log("useSTATIONS")
-            console.log(stations.data.stations)
-            
-            setLoading(false)
-            setStations(stations.data.stations)
-  
-      // },[loading,stations]) //end_useEffect
+          setLoading(false)
+          setStations(stations.data.stations)
     }) 
     },[setLoading,setStations,rent]); //end_useEffect
-
-  //   const updateSlot = useCallback((param) => { // cambiar estado available
-    
-  //     StationsService.update_Slot(param)
-      
-  //     .then((data) =>{
-  //         console.log(data)
-        
-  //     })
-  //     .catch(err => {
-  //       console.error(err)
-  //     })
-  // }, [])
 
       return {
         loading: loading,

@@ -18,10 +18,6 @@ export default function Register(){
 
     const RegisterSubmit = (e) =>{
 
-        console.log("<---- handleSubmin Register ---->");
-        console.log(email);
-        console.log(password);
-        console.log(username);
         registerForm({username, email,password})
     };
 

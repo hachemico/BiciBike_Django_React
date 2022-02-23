@@ -12,13 +12,12 @@ export default function Login(){
 
     const [email,setEmail]= useState("")
     const [password, setPassword]= useState("")
-    const {loginForm, isLogged}= useUser() //hay que hacer estructura de USERUSER
+    const {loginForm, isLogged}= useUser() 
     const { register, handleSubmit, formState: { errors } } = useForm();
     let navigate = useNavigate();
 
     useEffect(() => {
-        console.log("valor is loggued - USEFECT login")
-        console.log(isLogged);
+   
         if (isLogged) {
 
             navigate('/');
@@ -27,11 +26,7 @@ export default function Login(){
 
 
       const LoginSubmit = (e) => {
-        console.log("<-- handlesumit -->")
-        console.log(email)
-        console.log(password)
-        // e.preventDefault();
-        
+               
         loginForm({ email, password })
       };
 
@@ -39,7 +34,6 @@ export default function Login(){
         <>
         <div className="container ">
             <div className="loginForm d-flex justify-content-center">
-
 
                 <Form onSubmit={handleSubmit(LoginSubmit)}>
                 <img

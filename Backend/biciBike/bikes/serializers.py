@@ -80,11 +80,6 @@ class BikeUpdateSerializer(serializers.ModelSerializer):
                 'slot'
             ]
 
-    def update(self, validated_data):
-
-        print("UPDATE SERIALIZERUPDATE")
-
-
 
 class BikeSlotSerializer(serializers.ModelSerializer):
    

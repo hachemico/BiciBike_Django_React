@@ -5,7 +5,7 @@ import { StationsContextProvider } from "./context/StationsContext";
 import { UserContextProvider } from "./context/UserContext";
 import { RentsContextProvider } from "./context/RentContext";
 import {BikeContextProvider} from "./context/BikeContext"
-import { IncidencesContextProvider } from './context/IncidenceContext';
+import { IncidencesContextProvider } from './context/IncidencesContext';
 import Spinner from './components/Spinner/spinner'
 
 const AdminPanel = React.lazy(() => import("./pages/adminPanel/adminPanel"))
