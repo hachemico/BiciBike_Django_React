@@ -24,6 +24,5 @@ class Slot(models.Model):
             self.station,
             self.bike,
             self.status,
-            
         )
         return str(campos)

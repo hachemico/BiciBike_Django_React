@@ -37,10 +37,8 @@ class BikeSerializer(serializers.ModelSerializer):
         model = Bike
         fields = [
             'serialNumber',
-            'station',
             'available',
-            'at_use',
-            'slot'
+            'at_use'
         ]
 
 class SlotSerializer(serializers.ModelSerializer):

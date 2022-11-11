@@ -41,7 +41,8 @@ class BikeListAPIView(generics.ListAPIView):
     serializer_class = BikeListSerializer
 
     def list(self, request):
-        serializer_data = self.get_queryset().order_by('station')
+        # cambiado .order_by('station')
+        serializer_data = self.get_queryset().order_by('id')
         serializer = self.serializer_class(serializer_data, many=True)
 
         return Response({
@@ -79,8 +80,6 @@ class BikeCreateAPIView(APIView):
         serializer_context = {
             'serialNumber': request.data['bike']['serialNumber'],
             'available': request.data['bike']['available'],
-            'slot': request.data['bike']['slot'],
-            'station': request.data['bike']['station'],
             'at_use': request.data['bike']['at_use'],
             'request': request
         }
@@ -131,8 +130,6 @@ class BikeUpdateAPIView(generics.UpdateAPIView):
         serializer_context = {
             'serialNumber': request.data['bike']['serialNumber'],
             'available': request.data['bike']['available'],
-            'slot': request.data['bike']['slot'],
-            'station': request.data['bike']['station'],
             'at_use': request.data['bike']['at_use'],
         }
 
@@ -142,29 +139,7 @@ class BikeUpdateAPIView(generics.UpdateAPIView):
         except Bike.DoesNotExist:
             return Response('No existe una bici con ese Numero de Serie.', status=404)
 
-
-        if request.data['bike']['slot'] == ' ': #Depende de si teniamos slot anteriormente o no.
-    
-            try:
-                slot_instance=Slot.objects.get(id= bike_instance.slot)
-            except Slot.DoesNotExist:
-                return Response('No existe una bici con ese Numero de Serie.', status=404)
-        else:
-           
-            try:
-                slot_instance=Slot.objects.get(id= request.data['bike']['slot'])
-            except Slot.DoesNotExist:
-                return Response('No existe una bici con ese Numero de Serie.', status=404)
-
-        if request.data['bike']['slot'] == ' ' :
-        
-            updateSlot = Slot.objects.filter(id = bike_instance.slot).update(bike = '')  
-
-        else:
-            updateSlot = Slot.objects.filter(name = bike_instance.slot).update(bike = bike_instance)  
         updateBike = Bike.objects.filter(id = request.data['bike']['serialNumber']).update(available = request.data['bike']['available'],
-                                                                                            slot = request.data['bike']['slot'],
-                                                                                            station = request.data['bike']['station'],
                                                                                             at_use=request.data['bike']['at_use'])       
 
         return Response(updateBike, status=status.HTTP_201_CREATED)
@@ -222,8 +197,6 @@ class BikeAvailableUpdateAPIView(generics.UpdateAPIView):
         serializer_context = {
             'serialNumber': request.data['bike']['serialNumber'],
             'available': request.data['bike']['available'],
-            'slot': request.data['bike']['slot'],
-            'station': request.data['bike']['station'],
             'at_use': request.data['bike']['at_use'],
             'request': request
         }

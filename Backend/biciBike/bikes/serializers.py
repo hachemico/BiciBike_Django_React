@@ -20,10 +20,9 @@ class BikeSerializer(serializers.ModelSerializer):
         model = Bike
         fields = [
             'serialNumber',
-            'station',
             'available',
-            'at_use',
-            'slot'
+            'at_use'
+        
         ]
 
 class BikeListSerializer(serializers.ModelSerializer):
@@ -31,9 +30,7 @@ class BikeListSerializer(serializers.ModelSerializer):
         model = Bike
         fields = [
         'serialNumber',
-        'station',
         'available',
-        'slot',
         'at_use'
         ]
 
@@ -52,18 +49,14 @@ class BikeCreateSerializer(serializers.ModelSerializer):
         model = Bike
         fields = [
             'serialNumber',
-            'station',
             'available',
-            'at_use',
-            'slot'
+            'at_use'
         ]
         
     def create(self, validated_data):
         
         valueBike = Bike.objects.create(serialNumber = self.context['serialNumber'],
                                         available = self.context['available'], 
-                                        station=self.context['station'],
-                                        slot = self.context['slot'], 
                                         at_use=self.context['at_use'])
            
         return valueBike
@@ -74,10 +67,8 @@ class BikeUpdateSerializer(serializers.ModelSerializer):
             model = Bike
             fields = [
                 'serialNumber',
-                'station',
                 'available',
-                'at_use',
-                'slot'
+                'at_use'
             ]
 
 
@@ -134,6 +125,7 @@ class BikeRentSerializer(serializers.ModelSerializer):
         
         refreshUser = Profile.objects.filter(id=user_id).update(rentActive=True)
         return rentBike
+        return "HOLA UPDATE RENT"
 
 class BikeRentUpdateSerializer(serializers.ModelSerializer):  
     class Meta:
