@@ -130,8 +130,10 @@ const backBike = useCallback(({slot}) => {
 
 
 const addFav = useCallback(({slot}) => {
-
-  UserService.postAddFav(slot.id_bike)
+console.log("Hooks-useUSER-addFav");
+console.log("Valor Slot");
+console.log(slot.bike.serialNumber);
+  UserService.postAddFav(slot.bike.serialNumber)
     .then(setFavs)
    
     .catch(err => {

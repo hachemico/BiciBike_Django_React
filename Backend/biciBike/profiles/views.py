@@ -1,4 +1,4 @@
-from rest_framework import serializers, status
+from rest_framework import serializers, status, generics
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
@@ -82,6 +82,15 @@ class ProfileFollowAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# class ProfileFavoritesAPIView(APIView):
+class ProfileFavoriteBikesListAPIView(generics.ListCreateAPIView):
+    serializer_class = ProfileSerializer
 
-#     # print("Entra profileFavoritesAPIView")
+    def list(self, request, username=None):
+        print("Entra profileFavoritesAPIView2")
+        profile = self.request.user.profile
+        serializer_context = {'request': request}
+
+        serializer = self.serializer_class(profile, context = serializer_context)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+      

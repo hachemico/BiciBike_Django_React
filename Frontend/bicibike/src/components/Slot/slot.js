@@ -56,6 +56,19 @@ export default function Slot ({slot,index}) {
 
   }
 
+  const toUnfav = ({slot}) => {
+    console.log("ENTRA EN UNFAV YUHUUUUU !!")
+    // if(check_auth()=== true){ 
+
+    //   unFav({slot})
+
+    // }else{
+
+    //   //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+    // }
+
+  }
+
   const toIncidence = (event) => {
 
     if(check_auth()=== true){ //comprovamos que hay token.
@@ -93,6 +106,7 @@ export default function Slot ({slot,index}) {
   let imageSrc = ''
   let favButton= ''
   let incidenceButton=''
+  let fav_test=''
 
   if(slot.bike !== null){ //condicional biciDisponible modif. src/image
       if(slot.bike.available === true){
@@ -100,6 +114,9 @@ export default function Slot ({slot,index}) {
         favButton=<Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos</Button>
         incidenceButton=<Button variant="secondary" onClick={() => handleShow()}>Notificar Indicencia</Button>
         isRenting? rentButton=rentButton2 : rentButton=rentButton1
+        fav_test = slot.bike !== null
+    ? <Button variant="secondary" onClick={() => toUnfav({slot})}>YA ES FAVORITO</Button>
+    : ''    
 
       }else{
         imageSrc= OutImg
@@ -141,6 +158,8 @@ export default function Slot ({slot,index}) {
             {favButton}
             <br/>
             {incidenceButton}
+            <br/>
+            {fav_test}
           </div>
         </div>
         <Modal show={show} onHide={handleClose}>

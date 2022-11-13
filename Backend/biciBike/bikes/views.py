@@ -151,21 +151,23 @@ class BikeFavoriteAPIView(APIView):
     serializer_class = BikeSerializer
 
     def post(self, request, serialNumber=None):
-
+       
         profile = self.request.user.profile
         serializer_context = {'request': request}
-
+       
         try:
             bike = Bike.objects.get(serialNumber=serialNumber)
           
         except Bike.DoesNotExist:
             return Response('No existe una bici con ese Numero de Serie.', status=404)
-
+        print("+++ VALOR BIKE ++++")
+        print(bike)
         profile.favorite(bike)
 
         serializer = self.serializer_class(bike, context = serializer_context)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response("HOLA")
 
         
     def delete(self, request, serialNumber=None):

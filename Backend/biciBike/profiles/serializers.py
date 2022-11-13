@@ -9,10 +9,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     image = serializers.CharField(allow_blank=True, required=False)
     # image = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
+    favorites = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ('username', 'bio', 'image', 'following','rentActive')
+        fields = ('username', 'bio', 'image', 'following','rentActive','favorites')
         read_only_fields = ('username',)
 
     # def get_image(self, obj):
@@ -35,3 +36,18 @@ class ProfileSerializer(serializers.ModelSerializer):
         followee = instance
 
         return follower.is_following(followee)
+    
+    def get_favorites(self, instance):
+        request = self.context.get('request', None)
+
+        if request is None:
+            return False
+
+        # if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
+            return False
+
+        # follower = request.user.profile
+        followee = instance
+
+        return followee.getfavorites()

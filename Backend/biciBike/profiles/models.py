@@ -74,6 +74,16 @@ class Profile(TimestampedModel):
         print(bike)
         self.favorites.remove(bike)
 
+    def getfavorites(self):
+        print("Entra model- GET FAVORITES")
+        """List favorites bikes for the user."""
+        user_favorites=self.favorites.all()
+        bikes=[]
+        for bike in user_favorites:
+            bikes.append(bike.id)
+
+        return bikes
+
     def has_favorited(self, bike):
         """Returns True if we have favorited `article`; else False."""
         return self.favorites.filter(pk=bike.pk).exists()

@@ -1,22 +1,23 @@
 import ApiService from "./ApiService";
 
-class UserService {
+const UserService = {
   
   isAdmin(){
     return ApiService().get(`user/isAdmin`);
-  }
+  },
 
   postAddFav(slot) {
-
+    console.log("GUARDAR FAVORITO!!");
+    console.log(slot);
     return ApiService().post(`bikes/${slot}/favorite`);
-  }
+  },
 
   getFavs({jwt}){
-
-    return ApiService().get(`bikes/favorite`);
+    console.log("User-Service-getFavs()");
+    return ApiService().get(`profiles/favorites`);
  
   }
 
 }
 
-export default new UserService();
+export default UserService;

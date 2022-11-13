@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { useEffect } from 'react'
-import getFavs from '../services/UserService'
+import UserService from '../services/UserService'
 
 const Context = React.createContext({})
 
@@ -16,9 +16,16 @@ export function UserContextProvider ({children}) {
 
   useEffect(() => {
     if (!jwt) return setFavs([])
-    // getFavs({jwt})
-    //   .then(setFavs())
+    UserService.getFavs({jwt})
+      // .then(setFavs())
+      .then(data=>{
+        console.log("VUELVE DE LA PETICION UserService.get");
+        console.log(data);
+      })
   }, [jwt])
+
+ 
+
 
   return <Context.Provider value={{
     favs,

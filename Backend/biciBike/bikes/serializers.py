@@ -119,13 +119,12 @@ class BikeRentSerializer(serializers.ModelSerializer):
 
         rentBike= RentBike.objects.create(user = user,bike = slot.bike,from_station = slot.station, slot=slot , state = True)
 
-        refreshBike = Bike.objects.filter(id = str(slot.bike.id)).update( at_use = True , station = ' ', slot= ' ')
+        refreshBike = Bike.objects.filter(id = str(slot.bike.id)).update( at_use = True)
 
         refreshSlot = Slot.objects.filter(id = slot_id).update(bike = '', status = 'Disponible')
         
         refreshUser = Profile.objects.filter(id=user_id).update(rentActive=True)
         return rentBike
-        return "HOLA UPDATE RENT"
 
 class BikeRentUpdateSerializer(serializers.ModelSerializer):  
     class Meta:
@@ -166,7 +165,7 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
                 return False
             aux = rent[0].bike_id
 
-            refreshBike = Bike.objects.filter(id = str(rent[0].bike_id)).update( at_use = False , station = str(slot.station), slot= slot_id)
+            refreshBike = Bike.objects.filter(id = str(rent[0].bike_id)).update( at_use = False)
             refreshRent = RentBike.objects.filter(id = str(rent[0].id)).update( state = False , to_station = slot.station, slot=slot.id, date_finish=timezone.now())
             
             refreshSlot = Slot.objects.filter(id = slot_id).update(bike = aux, status = 'No Disponible')   
