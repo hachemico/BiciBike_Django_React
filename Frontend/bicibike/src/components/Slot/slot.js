@@ -58,6 +58,7 @@ export default function Slot ({slot,index}) {
 
   const toUnfav = ({slot}) => {
     console.log("ENTRA EN UNFAV YUHUUUUU !!")
+    console.log(slot)
     if(check_auth()=== true){ 
 
       unFav({slot})
@@ -116,16 +117,16 @@ export default function Slot ({slot,index}) {
         favoritos= favs
 
         //buscamos nºserie bici dentro del array favoritos.
-        favoritos.forEach( function(valor, indice, array) {
-          if(valor == slot.bike.serialNumber){
+        for(let i=0;i<favoritos.length;i++){
+          if(favoritos[i] == slot.bike.serialNumber){
             aux1=true;
           }
-        });
+        };
         //cambia el boton mostrado dependiendo de si es favorito del usuario o no.
         if (aux1 == true){
           favButton=<Button variant="secondary" onClick={() => toUnfav({slot})}> Eliminar Favorito </Button>
         }else{
-          favButton=<Button variant="secondary" onClick={() => toFav({slot})}> Añadir favoritos</Button>
+          favButton=<Button variant="secondary" onClick={() => toFav({slot})}> Añadir favoritos </Button>
         }  
         incidenceButton=<Button variant="secondary" onClick={() => handleShow()}>Notificar Indicencia</Button>
         isRenting? rentButton=rentButton2 : rentButton=rentButton1
@@ -138,7 +139,7 @@ export default function Slot ({slot,index}) {
   }else{
     imageSrc = SlotImg
     favButton = slot.bike !== null
-              ? <Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+              ? <Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos </Button>
               : '';
 
     incidenceButton = slot.bike !== null
@@ -171,8 +172,6 @@ export default function Slot ({slot,index}) {
             {favButton}
             <br/>
             {incidenceButton}
-            <br/>
-            {fav_test}
           </div>
         </div>
         <Modal show={show} onHide={handleClose}>

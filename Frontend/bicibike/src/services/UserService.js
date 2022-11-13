@@ -6,20 +6,15 @@ const UserService = {
     return ApiService().get(`user/isAdmin`);
   },
 
-  postAddFav(slot) {
-    console.log("GUARDAR FAVORITO!!");
-    console.log(slot);
+  postAddFav(slot) { //añadir a favoritos
     return ApiService().post(`bikes/${slot}/favorite`);
   },
 
-  DeleteFav(slot) {
-    console.log("GUARDAR FAVORITO!!");
-    console.log(slot);
+  deleteFav(slot) { //eliminar de favoritos
     return ApiService().delete(`bikes/${slot}/favorite`);
   },
 
-  getFavs({jwt}){
-    console.log("User-Service-getFavs()");
+  getFavs({jwt}){ //listar favoritos
     return ApiService().get(`profiles/favorites`);
  
   }

@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState,useCallback} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import  StationsContext  from '../context/StationsContext';
 import StationsService from '../services/StationsService'
 
@@ -17,7 +17,7 @@ export function useStations(){
           setLoading(false)
           setStations(stations.data.stations)
     }) 
-    },[setLoading,setStations,rent]); //end_useEffect
+    },[setLoading,setStations,rent,setRent]); //end_useEffect
 
       return {
         loading: loading,

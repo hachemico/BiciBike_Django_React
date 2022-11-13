@@ -13,28 +13,30 @@ export function UserContextProvider ({children}) {
   const [isRenting, setIsRenting] = useState(
     () => window.sessionStorage.getItem('isRenting')
   )
+  const [auxFavorite,setAuxFavorite] = useState([])
+
+  console.log("User-Context")
+  console.log("Favoritos>> "+favs)
 
   useEffect(() => {
     if (!jwt) return setFavs([])
     UserService.getFavs({jwt})
-      // .then(setFavs())
       .then(data=>{
-        console.log("VUELVE DE LA PETICION UserService.get");
-        console.log(data);
-        console.log(data.data.favorites);
         setFavs(data.data.favorites)
       })
-  }, [jwt])
+  }, [jwt,auxFavorite])
 
   return <Context.Provider value={{
     favs,
     jwt,
     isRenting,
     admin,
+    auxFavorite,
     setFavs,
     setJWT,
     setIsRenting,
     setAdmin,
+    setAuxFavorite,
   }}>
     {children}
   </Context.Provider>

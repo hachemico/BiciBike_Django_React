@@ -11,7 +11,7 @@ import RentService from '../services/RentService';
 
 export default function useUser(){
 
-const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,admin,setAdmin} = useContext(UserContext)
+const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,auxFavorite,setAuxFavorite,admin,setAdmin} = useContext(UserContext)
 const {rent,setRent} = useContext(RentContext)
 const {user,setUser} = useContext(RentContext)
 const [state, setState] = useState()
@@ -130,29 +130,28 @@ const backBike = useCallback(({slot}) => {
 
 
 const addFav = useCallback(({slot}) => {
-console.log("Hooks-useUSER-addFav");
-console.log("Valor Slot");
-console.log(slot.bike.serialNumber);
   UserService.postAddFav(slot.bike.serialNumber)
-    .then(setFavs)
+  .then((data) => {
+    setAuxFavorite(data);
+   })
    
     .catch(err => {
       console.error(err)
     })
-}, [setFavs]) 
+}, [setFavs,favs]) 
 
 
 const unFav = useCallback(({slot}) => {
  
-  UserService.DeleteFav(slot.id_bike)
+  UserService.deleteFav(slot.bike.serialNumber)
     .then((data) => {
-      console.log(data)
+      setAuxFavorite(data);
      })
    
     .catch(err => {
       console.error(err)
     })
-}, []) 
+}, [setFavs,favs]) 
 
 
   return {
@@ -166,7 +165,6 @@ const unFav = useCallback(({slot}) => {
     backBike,
     addFav,
     unFav,
-    favs,
     isAdmin
     
   }
