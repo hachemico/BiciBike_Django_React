@@ -12,6 +12,12 @@ const UserService = {
     return ApiService().post(`bikes/${slot}/favorite`);
   },
 
+  DeleteFav(slot) {
+    console.log("GUARDAR FAVORITO!!");
+    console.log(slot);
+    return ApiService().delete(`bikes/${slot}/favorite`);
+  },
+
   getFavs({jwt}){
     console.log("User-Service-getFavs()");
     return ApiService().get(`profiles/favorites`);

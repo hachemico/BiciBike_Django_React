@@ -12,8 +12,8 @@ import { useIncidences } from "../../hooks/useIncidences";
 
 export default function Slot ({slot,index}) {
 
-  const {check_auth,addFav,rentBike,backBike} = useUser()
-  const {isRenting,setIsRenting} = useContext(UserContext)
+  const {check_auth,addFav,unFav,rentBike,backBike} = useUser()
+  const {isRenting,setIsRenting,favs,setFavs} = useContext(UserContext)
 
   const [show, setShow] = useState(false);
   const [description,setDescription] = useState("")
@@ -58,14 +58,14 @@ export default function Slot ({slot,index}) {
 
   const toUnfav = ({slot}) => {
     console.log("ENTRA EN UNFAV YUHUUUUU !!")
-    // if(check_auth()=== true){ 
+    if(check_auth()=== true){ 
 
-    //   unFav({slot})
+      unFav({slot})
 
-    // }else{
+    }else{
 
-    //   //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
-    // }
+      //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+    }
 
   }
 
@@ -107,16 +107,29 @@ export default function Slot ({slot,index}) {
   let favButton= ''
   let incidenceButton=''
   let fav_test=''
+  let favoritos = '';
+  let aux1 = false;
 
   if(slot.bike !== null){ //condicional biciDisponible modif. src/image
       if(slot.bike.available === true){
         imageSrc= SlotImg
-        favButton=<Button variant="secondary" onClick={() => toFav({slot})}>Añadir favoritos</Button>
+        favoritos= favs
+
+        //buscamos nºserie bici dentro del array favoritos.
+        favoritos.forEach( function(valor, indice, array) {
+          if(valor == slot.bike.serialNumber){
+            aux1=true;
+          }
+        });
+        //cambia el boton mostrado dependiendo de si es favorito del usuario o no.
+        if (aux1 == true){
+          favButton=<Button variant="secondary" onClick={() => toUnfav({slot})}> Eliminar Favorito </Button>
+        }else{
+          favButton=<Button variant="secondary" onClick={() => toFav({slot})}> Añadir favoritos</Button>
+        }  
         incidenceButton=<Button variant="secondary" onClick={() => handleShow()}>Notificar Indicencia</Button>
         isRenting? rentButton=rentButton2 : rentButton=rentButton1
-        fav_test = slot.bike !== null
-    ? <Button variant="secondary" onClick={() => toUnfav({slot})}>YA ES FAVORITO</Button>
-    : ''    
+          
 
       }else{
         imageSrc= OutImg

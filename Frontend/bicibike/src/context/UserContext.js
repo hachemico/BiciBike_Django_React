@@ -21,11 +21,10 @@ export function UserContextProvider ({children}) {
       .then(data=>{
         console.log("VUELVE DE LA PETICION UserService.get");
         console.log(data);
+        console.log(data.data.favorites);
+        setFavs(data.data.favorites)
       })
   }, [jwt])
-
- 
-
 
   return <Context.Provider value={{
     favs,
