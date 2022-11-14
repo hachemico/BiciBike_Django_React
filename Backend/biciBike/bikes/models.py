@@ -45,11 +45,12 @@ class RentBike(models.Model):
 
 class Incidence(models.Model):
 
-    user     = models.ForeignKey( 'profiles.Profile', related_name='incidence_user', on_delete=models.CASCADE, null=True)
+    user        = models.ForeignKey( 'profiles.Profile', related_name='incidence_user', on_delete=models.CASCADE, null=True)
     bike        = models.ForeignKey('bikes.Bike',related_name ='incidence_bike', on_delete=models.CASCADE, null=True)
     description = models.CharField(max_length=600,default='Incidencia Bici')
     created_at  = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=200,null=True)
+    status      = models.CharField(max_length=200,null=True)
+    checked     = models.BooleanField(default=False,db_index=True)
     
     def __str__(self):
         data=(
@@ -58,6 +59,7 @@ class Incidence(models.Model):
             self.description,
             self.id,
             self.status,
+            self.checked,
             self.user
         )
         return str(data)

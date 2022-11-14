@@ -10,6 +10,7 @@ const [updateIncidences, setUpdateIncidences] = useState()
 const [createIncidences, setcreateIncidences] = useState()
 // const [incidences,setIncidences] = useState([])
 const {incidences,setIncidences} = useContext(IncidencesContext)
+const {nuevasIncidencias, setNuevasIncidencias} = useContext(IncidencesContext)
 
   useEffect(function(){ //admin list all incidences
   
@@ -18,7 +19,16 @@ const {incidences,setIncidences} = useContext(IncidencesContext)
     .then((data) => {
         setLoading(false)
         setIncidences(data.data.incidences)
-  }) 
+        let contador= 0;
+        for(let i=0;i< data.data.incidences.length ;i++ ){
+          if(data.data.incidences[i].checked == false){
+            contador = contador + 1;
+          }
+        } 
+        console.log("VALOR CONTADOR>> "+contador);
+        setNuevasIncidencias(contador);
+        console.log("VALOR NUEVAS INCIDENCIAS FINAL>> " + nuevasIncidencias);
+    }) 
   },[setLoading,updateIncidences,createIncidences]); 
   
 
@@ -26,7 +36,9 @@ const {incidences,setIncidences} = useContext(IncidencesContext)
     
     IncidencesService.create_incidence(param)
     .then((data) =>{
-        setcreateIncidences(data)
+     
+        setcreateIncidences(data)        
+        console.log(nuevasIncidencias);
     })
     .catch(err => {
       console.error(err)
@@ -58,6 +70,7 @@ const getIncidences = useCallback((param) => {
 return{
     loading: loading,
     incidences: incidences,
+    newIncidences:nuevasIncidencias,
     createIncidence,
     updateIncidence,
     getIncidences,

@@ -1,3 +1,4 @@
+
 import { ReactFragment} from "react";
 import { Button } from "react-bootstrap";
 import {Link} from 'react-router-dom'
@@ -5,10 +6,19 @@ import Card from 'react-bootstrap/Card'
 import CardGroup from 'react-bootstrap/CardGroup'
 
 import SlotImg from '../../assets/SLOT.png'
+import { useIncidences } from "../../hooks/useIncidences";
+
+import * as React from 'react';
+import Badge from '@mui/material/Badge';
+import MailIcon from '@mui/icons-material/Mail';
 
 
 export default function AdminPanel(){
+    
+    const {newIncidences} = useIncidences()
+    console.log("ADMIN PANEL NEWINCIDENCES>> "+ newIncidences);
 
+    // https://mui.com/material-ui/react-badge/
 
 return(
     <>
@@ -23,6 +33,10 @@ return(
                 <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
                 <Card.Body>
                 <Card.Title>INCIDENCIAS</Card.Title>
+                <Badge badgeContent={newIncidences} color="primary">
+                    <MailIcon color="action" />
+                </Badge>
+    
                 </Card.Body>
             </Link>
         </Card>

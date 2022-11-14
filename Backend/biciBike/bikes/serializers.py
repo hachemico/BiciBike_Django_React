@@ -185,6 +185,7 @@ class IncidenceSerializer(serializers.ModelSerializer):
             'bike',
             'description',
             'created_at',
+            'checked',
             'status',
             
         ]
