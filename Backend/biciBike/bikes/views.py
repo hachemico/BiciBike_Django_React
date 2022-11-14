@@ -329,3 +329,21 @@ class IncidenceUpdateAPIView(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class IncidenceCheckedUpdateAPIView(generics.UpdateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = IncidenceSerializer
+    
+    def update(self, request):
+     
+        try: #validamos contra base de datos.
+            incidence_instance = Incidence.objects.get(id=request.data['id'])
+
+        except Bike.DoesNotExist:
+             raise NotFound('No existe usuario con ese id')
+
+        updateIncidence = Incidence.objects.filter(id = incidence_instance.id ).update(checked = True)       
+
+        return Response(status=status.HTTP_201_CREATED)
+       

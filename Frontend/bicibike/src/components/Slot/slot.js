@@ -107,7 +107,7 @@ export default function Slot ({slot,index}) {
   let imageSrc = ''
   let favButton= ''
   let incidenceButton=''
-  let fav_test=''
+
   let favoritos = '';
   let aux1 = false;
 

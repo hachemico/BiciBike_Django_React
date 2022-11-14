@@ -17,5 +17,10 @@ const IncidencesService={
         return ApiService().get(`bikes/incidenceCreate/`);
     },
 
+    update_checked_incidence(param) { 
+    
+        return ApiService().put(`bikes/incidenceCheckedUpdate/`,{id:param});
+    },
+
 }
 export default IncidencesService;

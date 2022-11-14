@@ -14,6 +14,7 @@ from .views import (
     BikeDeleteAPIView,
     IncidenceCreateAPIView,
     IncidenceUpdateAPIView,
+    IncidenceCheckedUpdateAPIView,
 )
 
 app_name = 'bikes'
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'^bikes/delete/(?P<bike>[-\w]+)/?$',BikeDeleteAPIView.as_view()),
     url(r'^bikes/incidenceCreate/?$', IncidenceCreateAPIView.as_view()),
     url(r'^bikes/incidenceUpdate/?$', IncidenceUpdateAPIView.as_view()),
+    url(r'^bikes/incidenceCheckedUpdate/?$', IncidenceCheckedUpdateAPIView.as_view()),
     url(r'^bikes/rent/?$',BikeRentAPIView.as_view()),
     url(r'^bikes/rentUpdate/?$',BikeRentUpdateAPIView.as_view()),
     url(r'^bikes/availableUpdate/?$',BikeAvailableUpdateAPIView.as_view()),

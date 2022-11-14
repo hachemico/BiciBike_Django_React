@@ -30,7 +30,7 @@ return(
         <CardGroup>  
         <Card className="">
             <Link to={`/adminPanel/incidences`} className='Station-link text-dark text-decoration-none'>
-                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Panel Admin Incidencias" />
                 <Card.Body>
                 <Card.Title>INCIDENCIAS</Card.Title>
                 <Badge badgeContent={newIncidences} color="primary">
@@ -42,7 +42,7 @@ return(
         </Card>
         <Card className="">
             <Link to={`/`} className='Station-link text-dark text-decoration-none' >
-                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Panel Admin Alquileres" />
                 <Card.Body>
                 <Card.Title>ALQUILERES</Card.Title>
                 </Card.Body>
@@ -50,7 +50,7 @@ return(
         </Card>
         <Card className="">
             <Link to={`/adminPanel/bikes`} className='Station-link text-dark text-decoration-none'>
-                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Panel Admin Gestionar Bikes" />
                 <Card.Body>
                 <Card.Title>GESTIONAR BIKES</Card.Title>
                 </Card.Body>
@@ -58,7 +58,7 @@ return(
         </Card>
         <Card className="">
             <Link to={`/`} className='Station-link text-dark text-decoration-none'>
-                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Estación Poliesportiu" />
+                <Card.Img variant="top" src={SlotImg} className=" img-fluid img-thumbnail " alt="Imagen Panel Admin Gestionar Estaciones" />
                 <Card.Body>
                 <Card.Title>GESTIONAR ESTACIONES</Card.Title>
                 </Card.Body>
