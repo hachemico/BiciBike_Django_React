@@ -167,8 +167,8 @@ class BikeRentUpdateSerializer(serializers.ModelSerializer):
 
             refreshBike = Bike.objects.filter(id = str(rent[0].bike_id)).update( at_use = False)
             refreshRent = RentBike.objects.filter(id = str(rent[0].id)).update( state = False , to_station = slot.station, slot=slot.id, date_finish=timezone.now())
-            
-            refreshSlot = Slot.objects.filter(id = slot_id).update(bike = aux, status = 'No Disponible')   
+            refreshSlot = Slot.objects.filter(id = slot_id).update(bike = aux, status = 'No Disponible') 
+            refreshUser = Profile.objects.filter(id=user_id).update(rentActive=False)  
 
         except Slot.DoesNotExist:
              raise NotFound('No existe slot con ese id')

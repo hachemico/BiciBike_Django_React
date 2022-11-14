@@ -24,9 +24,8 @@ const {nuevasIncidencias, setNuevasIncidencias} = useContext(IncidencesContext)
             contador = contador + 1;
           }
         } 
-        console.log("VALOR CONTADOR>> "+contador);
         setNuevasIncidencias(contador);
-        console.log("VALOR NUEVAS INCIDENCIAS FINAL>> " + nuevasIncidencias);
+
     }) 
   },[setLoading,updateIncidences,createIncidences]); 
   
