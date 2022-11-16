@@ -3,6 +3,13 @@ import { useEffect } from 'react'
 import './profile.css'
 import UserContext from "../../context/UserContext";
 import UserService from '../../services/UserService';
+import useUser from "../../hooks/useUser";
+import useProfile from "../../hooks/useProfile";
+
+import Modal from 'react-bootstrap/Modal'
+import Form from 'react-bootstrap/Form'
+import { useForm } from "react-hook-form";
+import { Button } from "react-bootstrap";
 
 
 
@@ -15,9 +22,14 @@ export default function ProfilePage(){
     
  
     const [username, setUsername] = useState(
-        () => window.sessionStorage.getItem('username')
-        )
-    
+        () => window.sessionStorage.getItem('username'))
+
+    const { handleSubmit} = useForm();
+    const {updateProfile} = useProfile()
+    const [show, setShow] = useState(false);
+    const[newUsername,setNewUsername] = useState("")
+    const[bio,setBio] = useState("")
+
     console.log("VALOR username>> "+username)
     
     useEffect(() => {
@@ -38,7 +50,37 @@ export default function ProfilePage(){
         
 
       }, [])
-    
+
+
+      const toUpdate = (value) => {
+        updateProfile(value)
+    }
+
+    const handleClose = () => { console.log("HandleClose")
+            setShow(false)
+        }
+
+    const updateSubmit =(event)=>{
+        console.log("*******************************");
+        console.log("ENTRA SUMBIT!!")
+        console.log(newUsername);
+        console.log(bio);
+        console.log("*******************************");
+
+        let params={'userProfile':{'username':username,'bio':bio}}
+
+        updateProfile(params)
+        setShow(false)
+
+    }
+    const handleShow = (profileData) => {     //guardamos el valor en el state para poder aplicarlo en el update.
+        console.log("profileValue");
+        console.log(profileData);
+        // setUsername(profileValue.serialNumber)
+        // setBio(profileValue.at_use)
+        // // setAvailable(profileValue.available)
+        setShow(true)
+    }
     
 return(
     <>
@@ -98,13 +140,55 @@ return(
                             <div className="col-auto"><a href="#!"><i className="fa fa-dribbble text-dribbble"></i></a></div>
                         </div>
                         <div>
-                            <Button variant="secondary" onClick={() => toUpdate(profileData.username)}>Editar</Button>
+                            <button type="button" class="btn btn-warning" onClick={() => handleShow(username)}>Editar</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div> 
+   <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>BiciBike | Añadir Bici</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+
+            <Form onSubmit={handleSubmit(updateSubmit)}>
+                <Form.Group className="mb-3" controlId="formUsername">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control type="string" placeholder={profileData.username} value={newUsername} onChange={(e) => setNewUsername(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBio">
+                    <Form.Label>Bio</Form.Label>
+                    <Form.Control type="string" placeholder={profileData.bio} value={bio} onChange={(e) => setBio(e.target.value)}/>
+                </Form.Group>
+
+                {/* <Form.Group className="mb-3" controlId="formAvailable">
+                    <label>
+                    <div> Disponible:</div>
+                
+                    <select value={available} onChange={(e) => setAvailable(e.target.value)}>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    </label>    
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formAtUse">
+                    <label>
+                    <div>En uso:</div>
+                    <select value={atUse} onChange={(e) => setAtUse(e.target.value)}>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    </label>   
+                </Form.Group> */}
+                <Button variant="primary" type="submit">
+                    Actualizar
+                </Button>
+            </Form>
+            </Modal.Body>
+        </Modal>   
     </>
 )
 }

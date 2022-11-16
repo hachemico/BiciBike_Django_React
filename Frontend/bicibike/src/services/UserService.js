@@ -23,6 +23,11 @@ const UserService = {
     return ApiService().get(`profiles/${username}`);
  
   },
+
+  updateProfile(params){ //listar favoritos
+    
+    return ApiService().get(`profiles/update/`, params);
+  },
   
   getUserRents(username){ //listar favoritos
     
@@ -33,6 +38,7 @@ const UserService = {
     return ApiService().get(`profiles/${username}`);
  
   }
+
   
 }
 
