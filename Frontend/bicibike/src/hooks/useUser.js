@@ -11,7 +11,7 @@ import RentService from '../services/RentService';
 
 export default function useUser(){
 
-const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,auxFavorite,setAuxFavorite,admin,setAdmin} = useContext(UserContext)
+const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,auxFavorite,setAuxFavorite,admin,setAdmin,username,setUsername} = useContext(UserContext)
 const {rent,setRent} = useContext(RentContext)
 const {user,setUser} = useContext(RentContext)
 const [state, setState] = useState()
@@ -24,10 +24,14 @@ const loginForm = useCallback(({email, password}) => {
     LoginService.postLogin(email, password)
       .then(jwt => {
           console.log("entra hook-useUser --> login")
-          console.log(jwt.data.user.token)
-        window.sessionStorage.setItem('token', jwt.data.user.token)
-        setState({loading: false, error: false })
-        setJWT(jwt.data.user.token)
+          console.log(jwt.data.user)
+          window.sessionStorage.setItem('token', jwt.data.user.token)
+      
+          setState({loading: false, error: false })
+          setJWT(jwt.data.user.token)
+          setUsername(jwt.data.user.username)
+          window.sessionStorage.setItem('username', jwt.data.user.username)
+          // console.log("VALOR DE USERNAME AL LOGIN"+ username)
       })
       .catch(err => {
         window.sessionStorage.removeItem('token')
@@ -65,10 +69,12 @@ const registerForm = useCallback(({email, password, username}) => {
 
   const logout = useCallback(() => {
     
-    window.sessionStorage.removeItem('token')
-    setJWT(null)
-    setAdmin(null)
-    setUser(null)
+    window.sessionStorage.removeItem('token');
+    window.sessionStorage.removeItem('username');
+    setJWT(null);
+    setAdmin(null);
+    setUser(null);
+    navigate('/');
   }, [jwt,setJWT])
 
   const check_auth = () => {
@@ -90,6 +96,22 @@ const registerForm = useCallback(({email, password, username}) => {
           }else{
             setAdmin(null)
           }
+    })
+    .catch((err) => {
+      console.log(err);
+      setState({loading: false, error: true })
+    });
+
+  })
+
+
+  const getProfile = useCallback(()=>{
+    
+    UserService.getUserProfile()
+    .then((data)=>{
+          console.log("UseUSer-Profile valor recibido>> ");
+          console.log(data);
+
     })
     .catch((err) => {
       console.log(err);
@@ -165,8 +187,9 @@ const unFav = useCallback(({slot}) => {
     backBike,
     addFav,
     unFav,
-    isAdmin
-    
+    isAdmin,
+    getProfile
+
   }
 
 }

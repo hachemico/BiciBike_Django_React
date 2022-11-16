@@ -34,8 +34,7 @@ export function useBikes(){
         
         .then((data) =>{
 
-            let slot = data.data
-            StationsService.update_Slot({slot})
+            setToUpdateBike(data)
         })
         .catch(err => {
           console.error(err)

@@ -50,7 +50,8 @@ export default function Header(){
                             <Nav className="mr-auto">
                                 <Link to ='/'>Home</Link>
                                 <Link to ='/stations'>Estaciones</Link>
-                                <Link to ='#' onClick={handleClick}>Logout</Link>                                
+                                <Link to ='#' onClick={handleClick}>Logout</Link>     
+                                <Link to ='/profile'>Perfil</Link>                           
                             </Nav>
                             </Navbar.Collapse>
                         </Container>
@@ -115,7 +116,19 @@ export default function Header(){
                                 <Link to ='/'>Home</Link>
                                 <Link to ='/stations'>Estaciones</Link>
                                 <Link to ='/adminPanel'>PanelAdmin</Link>
-                                <Link to ='#' onClick={handleClick}>Logout</Link>                              
+                                <Link to ='#' onClick={handleClick} className="mr-4">Logout</Link>
+                                <Link to ='/profile' className="profile">
+                                    Perfil
+                                    <Navbar.Brand >
+                                        <img 
+                                        alt="User-Profile-Image"
+                                        src="https://bootdey.com/img/Content/avatar/avatar6.png" 
+                                        width="30"
+                                        height="30"
+                                        className="img-radius imgHeader" />{' '}
+                                    </Navbar.Brand>  
+                                 </Link>
+                                                           
                             </Nav>
                             </Navbar.Collapse>
                         </Container>

@@ -18,7 +18,7 @@ from .serializers import (  BikeSerializer,
 
 from rest_framework.permissions import (IsAdminUser, AllowAny,IsAuthenticated)
 from biciBike.core.permissions import IsStaff
-from .models import Bike,Incidence
+from .models import Bike,Incidence,RentBike,Incidence
 from biciBike.stations.models import Slot, Station
 
 #Admin
@@ -107,17 +107,18 @@ class BikeDeleteAPIView(generics.DestroyAPIView):
         except Bike.DoesNotExist:
             return Response('No existe una bici con ese Numero de Serie.', status=404)
         
-        if bike_instance.slot != '':
-            try:
-                slot_instance=Slot.objects.get(id= bike_instance.slot)
-            except Slot.DoesNotExist:
-                return Response('No existe una bici con ese Numero de Serie.', status=404)
-
-            updateSlot = Slot.objects.filter(name = bike_instance.slot).update(status = "Disponible")  
         
+        try:
+            slot_instance=Slot.objects.get(bike_id= bike)
+        except Slot.DoesNotExist:
+            print("NOEXISTE")
+            bike_instance.delete()
+            return Response('La bici no estaba asociada a ningún SLOT.', status=status.HTTP_200_OK)
+
+        updateSlot = Slot.objects.filter(name = slot_instance.id).update(status = "Disponible", bike_id = NULL)  
         bike_instance.delete()
 
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        return Response('Borrada Correctamente.', status=status.HTTP_200_OK)
 
 
 class BikeUpdateAPIView(generics.UpdateAPIView):
@@ -241,7 +242,27 @@ class BikeRentAPIView(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)   
+
+    def list(self, request):
+        print("ENTRA UPDATE LISTTT!!!")
+        user_id = self.request.user.profile.id
+        rent = RentBike.objects.filter(user_id=user_id)
+        incidences = Incidence.objects.filter(user_id=user_id)
+        num_rents= len(rent)
+        num_incidences=len(incidences)
+        # try: #validamos contra base de datos.
+        #     incidence_instance = Incidence.objects.get(id=request.data['id'])
+
+        # except Bike.DoesNotExist:
+        #      raise NotFound('No existe usuario con ese id')
+
+        # updateIncidence = Incidence.objects.filter(id = incidence_instance.id )
+        # serializer_data = self.get_queryset().order_by('id')
+        # serializer = self.serializer_class(serializer_data, many=True)
+
+        print(len(rent))
+        return Response({'data_rents':num_rents,'data_incidences':num_incidences},status=status.HTTP_200_OK)
 
 class BikeRentUpdateAPIView(generics.ListCreateAPIView):
     
@@ -346,4 +367,4 @@ class IncidenceCheckedUpdateAPIView(generics.UpdateAPIView):
         updateIncidence = Incidence.objects.filter(id = incidence_instance.id ).update(checked = True)       
 
         return Response(status=status.HTTP_201_CREATED)
-       
+

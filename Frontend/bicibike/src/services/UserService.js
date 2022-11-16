@@ -14,11 +14,26 @@ const UserService = {
     return ApiService().delete(`bikes/${slot}/favorite`);
   },
 
-  getFavs({jwt}){ //listar favoritos
+  getFavs(){ //listar favoritos
     return ApiService().get(`profiles/favorites`);
  
-  }
+  },
 
+  getUserProfile(username){ //listar favoritos
+    return ApiService().get(`profiles/${username}`);
+ 
+  },
+  
+  getUserRents(username){ //listar favoritos
+    
+    return ApiService().get(`bikes/rent`);
+  },
+
+  getUserIncidences(username){ //listar favoritos
+    return ApiService().get(`profiles/${username}`);
+ 
+  }
+  
 }
 
 export default UserService;

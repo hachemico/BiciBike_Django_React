@@ -11,8 +11,8 @@ export default function Bike({bike}){
     const [show, setShow] = useState(false);
 
     const[serialNumber,setSerialNumber] = useState("")
-    const[station, setStation] = useState("")
-    const[slot,setSlot] = useState("")
+    // const[station, setStation] = useState("")
+    // const[slot,setSlot] = useState("")
     const[atUse,setAtUse]=useState("")
     const[available,setAvailable]=useState("")
 
@@ -44,7 +44,7 @@ export default function Bike({bike}){
                             ? <Button variant="success" onClick={() => toAvailable({bikeValue})}>Estado</Button>
                             : <Button variant="warning" onClick={() => toAvailable({bikeValue})}>Estado</Button>
 
-    let buttonUpdate = (<button type="button" class="btn btn-warning" onClick={() => handleShow(bikeValue)}>Actualizar Bike</button>)
+    let buttonUpdate = (<button type="button" class="btn btn-warning" onClick={() => handleShow(bikeValue)}>Edit Bike</button>)
     let buttonDelete = (<button type="button" class="btn btn-danger" onClick={() => toDelete({bikeValue})}>Borrar</button>)
   
 
@@ -70,8 +70,6 @@ export default function Bike({bike}){
         }
        
         let param = {"bike":{"serialNumber":serialNumber,
-                            "slot":slot,
-                            "station":station,
                             "available":valueAvailable,
                             "at_use":valueAtUse
                     }}
@@ -82,8 +80,6 @@ export default function Bike({bike}){
     const handleShow = (bikeValue) => {     //guardamos el valor en el state para poder aplicarlo en el update.
         
         setSerialNumber(bikeValue.serialNumber)
-        setSlot(bikeValue.slot)
-        setStation(bikeValue.station)
         setAtUse(bikeValue.at_use)
         setAvailable(bikeValue.available)
         setShow(true)
@@ -94,13 +90,12 @@ export default function Bike({bike}){
         <>
         <tr>
             <td>{bike.serialNumber}</td>
-            <td>{bike.station}</td>
-            <td>{bike.slot}</td>
+            {/* <td>{bike.station}</td>
+            <td>{bike.slot}</td> */}
             <td>{valueAvailable} | {buttonAvailable}</td>
             <td>{valueAt_use}</td>
             <td>
                 <div className="d-flex justify-content-around">
-                    {/* {buttonCreate} */}
                     {buttonUpdate}
                     {buttonDelete}
                 </div>
@@ -118,25 +113,15 @@ export default function Bike({bike}){
                     <Form.Control type="string" placeholder="Numero Serie" value={serialNumber} onChange={(e) => setSerialNumber(e.target.value)}/>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formStation">
-                    <Form.Label>Estacion</Form.Label>
-                    <Form.Control type="string" placeholder="Estacion" value={station} onChange={(e) => setStation(e.target.value)}/>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formSlot">
-                    <Form.Label>Slot</Form.Label>
-                    <Form.Control type="string" placeholder="Slot" value={slot} onChange={(e) => setSlot(e.target.value)}/>
-                </Form.Group>
                 <Form.Group className="mb-3" controlId="formAvailable">
-                   
-               
-                <label>
-                <div> Disponible:</div>
-               
-                <select value={available} onChange={(e) => setAvailable(e.target.value)}>
-                    <option value="true">True</option>
-                    <option value="false">False</option>
-                </select>
-                </label>    
+                    <label>
+                    <div> Disponible:</div>
+                
+                    <select value={available} onChange={(e) => setAvailable(e.target.value)}>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    </label>    
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formAtUse">
                     <label>

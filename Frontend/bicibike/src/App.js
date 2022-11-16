@@ -4,7 +4,7 @@ import './App.css'
 import { StationsContextProvider } from "./context/StationsContext";
 import { UserContextProvider } from "./context/UserContext";
 import { RentsContextProvider } from "./context/RentContext";
-import {BikeContextProvider} from "./context/BikeContext"
+import { BikeContextProvider} from "./context/BikeContext"
 import { IncidencesContextProvider } from './context/IncidencesContext';
 import Spinner from './components/Spinner/spinner'
 
@@ -15,6 +15,7 @@ const Footer = React.lazy(() => import("./components/Footer/footer"))
 const Header= React.lazy(() => import("./components/Header/header"))
 const Home = React.lazy(() => import("./pages/home/home"))
 const Login = React.lazy(() => import("./pages/login/login"))
+const Profile = React.lazy(() => import("./pages/profile/profile"))
 const Register  = React.lazy(() => import("./pages/register/register"))
 const Station = React.lazy(() => import("./pages/station/station"))
 const Stations  = React.lazy(() => import("./pages/stations/stations"))
@@ -38,6 +39,7 @@ function App() {
                   <Route path="/adminPanel/incidences"  element={ <Incidences/> }/>
                   <Route path="/"                       element={ <Home/> } />
                   <Route path="/login"                  element={ <Login/> } />
+                  <Route path="/profile"                element={ <Profile/> } />
                   <Route path="/register"               element={ <Register/> } />
                   <Route path="/station/:name"          element={ <Station/> } />
                   <Route path="/stations"               element={ <Stations/> } />

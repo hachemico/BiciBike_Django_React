@@ -20,3 +20,15 @@ Nav a{
     padding: 10px;
     color: whitesmoke;
 }
+
+.imgHeader{
+    margin-left: 1rem;
+}
+
+.profile{
+ margin-left: auto;
+}
+
+.img-radius {
+    border-radius: 5px;
+}

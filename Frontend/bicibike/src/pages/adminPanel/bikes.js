@@ -39,8 +39,6 @@ export default function Bikes(){
         atUse === 'on' ? valueAtUse = 'True': valueAtUse = 'False'
         
         let param = {"bike":{"serialNumber":serialNumber,
-                            "slot":slot,
-                            "station":station,
                             "available":valueAvailable,
                             "at_use":valueAtUse
                     }}
@@ -66,14 +64,14 @@ export default function Bikes(){
                             <Form.Label>Numero Serie</Form.Label>
                             <Form.Control type="string" placeholder="Numero Serie" onChange={(e) => setSerialNumber(e.target.value)}/>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formStation">
+                        {/* <Form.Group className="mb-3" controlId="formStation">
                             <Form.Label>Estacion</Form.Label>
                             <Form.Control type="string" placeholder="Estacion" onChange={(e) => setStation(e.target.value)}/>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formSlot">
                             <Form.Label>Slot</Form.Label>
                             <Form.Control type="string" placeholder="Slot" onChange={(e) => setSlot(e.target.value)}/>
-                        </Form.Group>
+                        </Form.Group> */}
                         <Form.Group className="mb-3" controlId="formAvailable">
                             <Form.Check type="checkbox" label="Disponible" onChange={(e) => setAvailable(e.target.value)}/>
                         </Form.Group>
@@ -92,8 +90,6 @@ export default function Bikes(){
                 <thead>
                     <tr>
                     <th>Ser.Num</th>
-                    <th>Estación</th>
-                    <th>Slot</th>
                     <th>Estado | Cambiar</th>
                     <th>En uso</th>
                     <th>Acciones</th>

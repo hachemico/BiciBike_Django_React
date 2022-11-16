@@ -7,6 +7,8 @@ const Context = React.createContext({})
 export function UserContextProvider ({children}) {
   const [favs, setFavs] = useState([])
   const [admin, setAdmin] = useState([])
+  const [profileData, setProfileData] = useState([])
+  const [username, setUsername] = useState([])
   const [jwt, setJWT] = useState(
     () => window.sessionStorage.getItem('token')
   )
@@ -14,9 +16,11 @@ export function UserContextProvider ({children}) {
     () => window.sessionStorage.getItem('isRenting')
   )
   const [auxFavorite,setAuxFavorite] = useState([])
-
-  console.log("User-Context")
-  console.log("Favoritos>> "+favs)
+  const [numRents, setNumRents] = useState([])
+  const [numIncidences, setNumIncidences] = useState([])
+  console.log("User-Context");
+  console.log("Favoritos>> "+favs);
+  console.log("Username>>"+ username);
 
   useEffect(() => {
     if (!jwt) return setFavs([])
@@ -32,11 +36,19 @@ export function UserContextProvider ({children}) {
     isRenting,
     admin,
     auxFavorite,
+    profileData,
+    username,
+    numRents,
+    numIncidences,
     setFavs,
     setJWT,
     setIsRenting,
     setAdmin,
     setAuxFavorite,
+    setProfileData,
+    setUsername,
+    setNumRents,
+    setNumIncidences
   }}>
     {children}
   </Context.Provider>
