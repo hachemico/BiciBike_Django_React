@@ -8,7 +8,7 @@ from rest_framework import viewsets
 
 from .models import Profile
 from .renderers import ProfileJSONRenderer
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer,ProfileListSerializer
 
 
 
@@ -93,4 +93,19 @@ class ProfileFavoriteBikesListAPIView(generics.ListCreateAPIView):
         serializer = self.serializer_class(profile, context = serializer_context)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-      
+
+class ProfileUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProfileSerializer
+
+    
+    def update(self, request):
+         
+        try: #validamos contra base de datos.
+            profile_instance = Profile.objects.get(id=self.request.user.profile.id)
+        except Profile.DoesNotExist:
+             raise NotFound('No existe usuario con ese id')
+
+        Profile.objects.filter(id = self.request.user.id).update(bio = request.data['bio'])       
+            
+        return Response('Hola', status=status.HTTP_200_OK)

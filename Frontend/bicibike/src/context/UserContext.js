@@ -18,6 +18,7 @@ export function UserContextProvider ({children}) {
   const [auxFavorite,setAuxFavorite] = useState([])
   const [numRents, setNumRents] = useState([])
   const [numIncidences, setNumIncidences] = useState([])
+  const [auxBio, setAuxBio] = useState([])
   console.log("User-Context");
   console.log("Favoritos>> "+favs);
   console.log("Username>>"+ username);
@@ -40,6 +41,7 @@ export function UserContextProvider ({children}) {
     username,
     numRents,
     numIncidences,
+    auxBio,
     setFavs,
     setJWT,
     setIsRenting,
@@ -48,7 +50,8 @@ export function UserContextProvider ({children}) {
     setProfileData,
     setUsername,
     setNumRents,
-    setNumIncidences
+    setNumIncidences,
+    setAuxBio
   }}>
     {children}
   </Context.Provider>

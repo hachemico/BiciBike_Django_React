@@ -15,7 +15,7 @@ import { Button } from "react-bootstrap";
 
 export default function ProfilePage(){
 
-    const { profileData, setProfileData, numRents,setNumRents,numIncidences,setNumIncidences} = useContext(UserContext)
+    const { profileData, setProfileData, numRents,setNumRents,numIncidences,setNumIncidences, auxBio, setAuxBio} = useContext(UserContext)
     
 
     console.log("VALOR PROFILE_DATA>> "+profileData);
@@ -49,7 +49,7 @@ export default function ProfilePage(){
         })
         
 
-      }, [])
+      }, [auxBio])
 
 
       const toUpdate = (value) => {
@@ -67,7 +67,7 @@ export default function ProfilePage(){
         console.log(bio);
         console.log("*******************************");
 
-        let params={'userProfile':{'username':username,'bio':bio}}
+        let params={'user':username,'bio':bio}
 
         updateProfile(params)
         setShow(false)
@@ -140,7 +140,7 @@ return(
                             <div className="col-auto"><a href="#!"><i className="fa fa-dribbble text-dribbble"></i></a></div>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-warning" onClick={() => handleShow(username)}>Editar</button>
+                            <button type="button" className="btn btn-warning" onClick={() => handleShow(username)}>Editar</button>
                         </div>
                     </div>
                 </div>

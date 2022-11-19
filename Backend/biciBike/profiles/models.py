@@ -42,7 +42,14 @@ class Profile(TimestampedModel):
 
 
     def __str__(self):
-        return self.user.username
+        # return self.user.username
+        data=(
+                self.user.username,
+                self.bio,
+                self.image,
+                self.rentActive,
+            )
+        return str(data)
 
     def follow(self, profile):
         """Follow `profile` if we're not already following `profile`."""

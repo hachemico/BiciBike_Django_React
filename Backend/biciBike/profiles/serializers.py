@@ -51,3 +51,11 @@ class ProfileSerializer(serializers.ModelSerializer):
         followee = instance
 
         return followee.getfavorites()
+
+class ProfileListSerializer(serializers.ModelSerializer):  
+    class Meta:
+        model = Profile
+        fields = [
+        'bio',
+        'image',
+        ]

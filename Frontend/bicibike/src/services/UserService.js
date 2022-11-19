@@ -25,8 +25,9 @@ const UserService = {
   },
 
   updateProfile(params){ //listar favoritos
-    
-    return ApiService().get(`profiles/update/`, params);
+    console.log("PARAMS UPDATE");
+    console.log(params);
+    return ApiService().put(`profiles/profileUpdate/`,params);
   },
   
   getUserRents(username){ //listar favoritos
