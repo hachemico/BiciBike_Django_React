@@ -30,6 +30,7 @@ export default() => {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
       }
+      
       return Promise.reject(error) 
     }
   )

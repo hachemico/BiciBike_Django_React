@@ -2,18 +2,25 @@ import React,{useContext,useState} from "react";
 import './slot.css'
 import SlotImg from '../../assets/SLOT.png'
 import OutImg from '../../assets/OUTSERVICE.png'
+
 import Button from 'react-bootstrap/Button'
-import useUser from "../../hooks/useUser";
-import UserContext from "../../context/UserContext"
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import { useForm } from "react-hook-form";
-import { useIncidences } from "../../hooks/useIncidences";
+
+import useUser from "../../hooks/useUser";
+import {useIncidences} from "../../hooks/useIncidences";
+
+import UserContext from "../../context/UserContext"
+import ToastrContext from "../../context/ToastrContext";
+
+
 
 export default function Slot ({slot,index}) {
 
   const {check_auth,addFav,unFav,rentBike,backBike} = useUser()
   const {isRenting,setIsRenting,favs,setFavs} = useContext(UserContext)
+  const { tostr, setToastr} = useContext(ToastrContext);
 
   const [show, setShow] = useState(false);
   const [description,setDescription] = useState("")
@@ -28,6 +35,7 @@ export default function Slot ({slot,index}) {
 
       rentBike({slot})
     }else{
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
   }
@@ -39,6 +47,7 @@ export default function Slot ({slot,index}) {
 
     }else{
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
     }
   }
 
@@ -50,7 +59,7 @@ export default function Slot ({slot,index}) {
       addFav({slot})
 
     }else{
-
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
 
@@ -64,7 +73,7 @@ export default function Slot ({slot,index}) {
       unFav({slot})
 
     }else{
-
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
     }
 
@@ -83,6 +92,7 @@ export default function Slot ({slot,index}) {
       setShow(false)
     }else{
       //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
     }
 
   }
@@ -151,7 +161,18 @@ export default function Slot ({slot,index}) {
 
   const handleClose = () => { setShow(false)}
 
-  const handleShow = () => { setShow(true)}
+  // const handleShow = () => { setShow(true)}
+
+  const handleShow = () => {
+    console.log("CLICK BUSTTON INCIDENCE!!");
+
+    if(check_auth()=== true){ //comprovamos que hay token.
+      setShow(true)
+    }else{
+      //MOSTRAR TOASTER "Para realizar un alquiler, tiene que estar registrado." 
+      setToastr({state:'warning', message:"Por favor, Inicie sesión."});
+    }
+  }
 
   return (
       <>

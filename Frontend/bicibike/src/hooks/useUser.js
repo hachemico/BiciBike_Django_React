@@ -1,45 +1,56 @@
 import { useState,useContext,useCallback } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import LoginService from "../services/LoginService";
 import RegisterService from "../services/RegisterService";
-import UserContext from "../context/UserContext";
-
-import  RentContext from '../context/RentContext'
-import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
 import RentService from '../services/RentService';
+
+import UserContext from "../context/UserContext";
+import ToastrContext from "../context/ToastrContext";
+import  RentContext from '../context/RentContext'
 
 
 export default function useUser(){
 
 const { jwt, setJWT,favs,setFavs,isRenting,setIsRenting,auxFavorite,setAuxFavorite,admin,setAdmin,username,setUsername} = useContext(UserContext)
-const {rent,setRent} = useContext(RentContext)
-const {user,setUser} = useContext(RentContext)
-const [state, setState] = useState()
+const {rent,setRent,user,setUser} = useContext(RentContext)
+const { tostr, setToastr} = useContext(ToastrContext);
 
+const [state, setState] = useState()
 let navigate = useNavigate();
+
 
 const loginForm = useCallback(({email, password}) => {
   console.log("entra login")
     setState({loading: true, error: false })
     LoginService.postLogin(email, password)
       .then(jwt => {
+
           console.log("entra hook-useUser --> login")
+          console.log("VALOR DEL JWT BUSCANDO ERROR LOGIN!");
+
+          console.log(jwt)
           console.log(jwt.data.user)
+          let message= "Bienvenido " + jwt.data.user.username;
+          setToastr({state:'success', message:message});
           window.sessionStorage.setItem('token', jwt.data.user.token)
       
           setState({loading: false, error: false })
           setJWT(jwt.data.user.token)
           setUsername(jwt.data.user.username)
           window.sessionStorage.setItem('username', jwt.data.user.username)
+         
+          
           // console.log("VALOR DE USERNAME AL LOGIN"+ username)
       })
       .catch(err => {
         window.sessionStorage.removeItem('token')
         setState({loading: false, error: true })
+        setToastr({state:'error', message:"Usuario o contraseña incorrectos"});
         console.error(err)
       })
   }, [setJWT,setState])
-// }, [])
 
 const registerForm = useCallback(({email, password, username}) => {
   
@@ -50,16 +61,21 @@ const registerForm = useCallback(({email, password, username}) => {
           if (data.data.user.token){
             setState({loading: false, error: false })
             navigate('/'); // enviamos el usuario a home, aunque podría ir a Login.
+            setToastr({state:'success', message:'Registrado correctamente!'});
             //// MOSTRAR  TOASTER MENSAJE REGISTRnaADO CORRECTAMENTE
           }else{
-            //// MOSTRAR TOASTER ERROR DE REGISTRO. Contacte con un AMINISTRADOR.
-            setState({loading: false, error: true })
+          
+            setState({loading: false, error: true });
+            setToastr({state:'error', message:'Error - Por favor contacte con un administrador.'});
+
           }
            
         })
         .catch((err) => {
           console.log(err);
           setState({loading: false, error: true })
+          setToastr({state:'error', message:'El usuario ya existe!'});
+
         });
     },
     [setState,navigate]
@@ -71,10 +87,15 @@ const registerForm = useCallback(({email, password, username}) => {
     
     window.sessionStorage.removeItem('token');
     window.sessionStorage.removeItem('username');
+    setToastr({state:'success', message:'GRACIAS POR UTILIZAR NUESTROS SERVICIOS!'});
+    
     setJWT(null);
     setAdmin(null);
+    navigate("/");
     setUser(null);
-    navigate('/');
+    
+    
+    
   }, [jwt,setJWT])
 
   const check_auth = () => {
@@ -128,6 +149,7 @@ const registerForm = useCallback(({email, password, username}) => {
       setRent(data)
       window.sessionStorage.setItem('isRenting', true)
       setIsRenting(true)
+      setToastr({state:'success', message:'Bicicleta alquilada!'});
     })
    
     .catch(err => {
@@ -143,6 +165,7 @@ const backBike = useCallback(({slot}) => {
     setRent(data)
     window.sessionStorage.removeItem('isRenting')
     setIsRenting(null)
+    setToastr({state:'success', message:'Alquiler finalizado Correctamente!'});
   })
  
   .catch(err => {
@@ -155,6 +178,7 @@ const addFav = useCallback(({slot}) => {
   UserService.postAddFav(slot.bike.serialNumber)
   .then((data) => {
     setAuxFavorite(data);
+    setToastr({state:'info', message:'Añadida a Favoritos!'});
    })
    
     .catch(err => {
@@ -168,6 +192,7 @@ const unFav = useCallback(({slot}) => {
   UserService.deleteFav(slot.bike.serialNumber)
     .then((data) => {
       setAuxFavorite(data);
+      setToastr({state:'info', message:'Eliminada de tus Favoritos!'});
      })
    
     .catch(err => {

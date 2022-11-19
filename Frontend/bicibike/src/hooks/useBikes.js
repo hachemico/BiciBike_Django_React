@@ -2,11 +2,12 @@ import { useState,useContext,useEffect ,useCallback} from "react"
 import BikesService from "../services/BikeService";
 import BikesContext from "../context/BikeContext"
 import StationsService from "../services/StationsService";
-
+import ToastrContext from "../context/ToastrContext";
 
 export function useBikes(){
     const { bikes, setBikes , available,setAvailable,toUpdateBike,setToUpdateBike} = useContext(BikesContext)
     const [loading, setLoading] = useState(false)
+    const { tostr, setToastr} = useContext(ToastrContext);
 
     useEffect(function(){ //admin list all bikes
         setLoading(true)
@@ -23,8 +24,13 @@ export function useBikes(){
         BikesService.available(bikeValue)
         
         .then(setAvailable)
+        .then((data) => {
+            setAvailable()
+            setToastr({state:'success', message:"Estado Actualizado."});
+      }) 
         .catch(err => {
           console.error(err)
+          setToastr({state:'error', message:"Error al actualizar."});
         })
     }, [setAvailable])
 
@@ -33,11 +39,12 @@ export function useBikes(){
         BikesService.create(param)
         
         .then((data) =>{
-
+            setToastr({state:'success', message:"Bike creada con éxito."});
             setToUpdateBike(data)
         })
         .catch(err => {
           console.error(err)
+          setToastr({state:'error', message:"Error al crear."});
         })
     }, [])
 
@@ -45,11 +52,13 @@ export function useBikes(){
     
         BikesService.update(param)
         .then((data) =>{
+            setToastr({state:'success', message:"Bike actualizada con éxito."});
             setToUpdateBike(data)
             console.log(data)
         })
         .catch(err => {
           console.error(err)
+          setToastr({state:'error', message:"Error al actualizar."});
         })
     }, [setToUpdateBike])
 
@@ -57,11 +66,13 @@ export function useBikes(){
     
         BikesService.delete(param)
         .then((data) =>{
+            setToastr({state:'error', message:"Eliminada con éxito."});
             setToUpdateBike(data)
             console.log(data)
         })
         .catch(err => {
-          console.error(err)
+          console.error(err);
+          setToastr({state:'error', message:"Error al eliminar."});
         })
     }, [setToUpdateBike])
 

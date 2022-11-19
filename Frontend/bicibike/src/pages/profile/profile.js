@@ -61,11 +61,6 @@ export default function ProfilePage(){
         }
 
     const updateSubmit =(event)=>{
-        console.log("*******************************");
-        console.log("ENTRA SUMBIT!!")
-        console.log(newUsername);
-        console.log(bio);
-        console.log("*******************************");
 
         let params={'user':username,'bio':bio}
 
@@ -76,9 +71,6 @@ export default function ProfilePage(){
     const handleShow = (profileData) => {     //guardamos el valor en el state para poder aplicarlo en el update.
         console.log("profileValue");
         console.log(profileData);
-        // setUsername(profileValue.serialNumber)
-        // setBio(profileValue.at_use)
-        // // setAvailable(profileValue.available)
         setShow(true)
     }
     

@@ -1,7 +1,7 @@
 import { useState,useContext,useEffect ,useCallback} from "react"
 import IncidencesContext from "../context/IncidencesContext"
 import IncidencesService from "../services/IncidendesService";
-
+import ToastrContext from "../context/ToastrContext";
 
 export function useIncidences(){
 
@@ -10,6 +10,8 @@ const [updateIncidences, setUpdateIncidences] = useState()
 const [createIncidences, setcreateIncidences] = useState()
 const {incidences,setIncidences} = useContext(IncidencesContext)
 const {nuevasIncidencias, setNuevasIncidencias} = useContext(IncidencesContext)
+const { tostr, setToastr} = useContext(ToastrContext);
+
 
   useEffect(function(){ //admin list all incidences
   
@@ -34,7 +36,7 @@ const {nuevasIncidencias, setNuevasIncidencias} = useContext(IncidencesContext)
     
     IncidencesService.create_incidence(param)
     .then((data) =>{
-     
+      setToastr({state:'success', message:"Nueva Incidencia creada."});
         setcreateIncidences(data)        
         console.log(nuevasIncidencias);
     })
@@ -48,6 +50,7 @@ const {nuevasIncidencias, setNuevasIncidencias} = useContext(IncidencesContext)
     
       IncidencesService.update_incidence(param)
       .then((data) =>{
+          setToastr({state:'success', message:"Incidencia finalizada correctamente."});
           setUpdateIncidences(data)
       })
       .catch(err => {

@@ -1,11 +1,13 @@
 import React, {Suspense} from 'react'
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';  
 import { StationsContextProvider } from "./context/StationsContext";
 import { UserContextProvider } from "./context/UserContext";
 import { RentsContextProvider } from "./context/RentContext";
 import { BikeContextProvider} from "./context/BikeContext"
 import { IncidencesContextProvider } from './context/IncidencesContext';
+import { ToastrContextProvider } from './context/ToastrContext';
 import Spinner from './components/Spinner/spinner'
 
 const AdminPanel = React.lazy(() => import("./pages/adminPanel/adminPanel"))
@@ -19,15 +21,18 @@ const Profile = React.lazy(() => import("./pages/profile/profile"))
 const Register  = React.lazy(() => import("./pages/register/register"))
 const Station = React.lazy(() => import("./pages/station/station"))
 const Stations  = React.lazy(() => import("./pages/stations/stations"))
+const Toastr  = React.lazy(() => import("./components/Toastr/toastr"))
 
 function App() {
   return (
       <Router>
         <Suspense fallback={<Spinner />}>
         <UserContextProvider>
+        <ToastrContextProvider>  
         <div className="App">
           <section className="App-content">
           <Header/>
+          <Toastr/> 
             <main>
               <StationsContextProvider>
               <RentsContextProvider>
@@ -45,6 +50,7 @@ function App() {
                   <Route path="/stations"               element={ <Stations/> } />
                 
                 </Routes>
+                
                 </IncidencesContextProvider>
                 </BikeContextProvider>
               </RentsContextProvider>
@@ -53,6 +59,7 @@ function App() {
             <Footer/>
           </section>
         </div>
+        </ToastrContextProvider>
         </UserContextProvider>
         </Suspense>
       </Router>
