@@ -5,14 +5,22 @@ services:
     container_name: cont_db
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
+    environment: 
+            MYSQL_ROOT_PASSWORD: hache1234
+            MYSQL_DATABASE: biciBike
+            MYSQL_USER: hache
+            MYSQL_PASSWORD: hache1234
     volumes:
       - ./mysql-dump:/docker-entrypoint-initdb.d/
     ports:
       - "3307:3306"
-    env_file: .env
     networks:
       - cont_network
-
+  adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
   server:
     build: ./Backend/
     container_name: cont_backend
