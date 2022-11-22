@@ -22,16 +22,11 @@ let navigate = useNavigate();
 
 
 const loginForm = useCallback(({email, password}) => {
-  console.log("entra login")
+
     setState({loading: true, error: false })
     LoginService.postLogin(email, password)
       .then(jwt => {
 
-          console.log("entra hook-useUser --> login")
-          console.log("VALOR DEL JWT BUSCANDO ERROR LOGIN!");
-
-          console.log(jwt)
-          console.log(jwt.data.user)
           let message= "Bienvenido " + jwt.data.user.username;
           setToastr({state:'success', message:message});
           window.sessionStorage.setItem('token', jwt.data.user.token)
@@ -40,9 +35,6 @@ const loginForm = useCallback(({email, password}) => {
           setJWT(jwt.data.user.token)
           setUsername(jwt.data.user.username)
           window.sessionStorage.setItem('username', jwt.data.user.username)
-         
-          
-          // console.log("VALOR DE USERNAME AL LOGIN"+ username)
       })
       .catch(err => {
         window.sessionStorage.removeItem('token')

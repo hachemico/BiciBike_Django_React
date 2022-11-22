@@ -4,6 +4,9 @@ services:
     image: mysql
     container_name: cont_db
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    volumes:
+      - ./mysql-dump:/docker-entrypoint-initdb.d/
     ports:
       - "3307:3306"
     env_file: .env
@@ -17,6 +20,8 @@ services:
     ports:
       - "8000:8000"
     env_file: .env
+    volumes:
+      - ./server/:/app/Backend/
     networks:
       - cont_network
     depends_on:
@@ -30,6 +35,8 @@ services:
       - 3000:3000
     networks:
       - cont_network
+    volumes:
+      - ./client/:/app/Frontend/
     depends_on:
       - server
 networks:
